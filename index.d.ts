@@ -14,3 +14,5 @@ export declare function emitWarning (
   b?: any,
   c?: any
 ): void
+
+export const emittedWarnings: Map<string, boolean>

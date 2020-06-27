@@ -50,4 +50,8 @@ function emitWarning (code, a, b, c) {
   process.emitWarning(new codes[code](a, b, c))
 }
 
-module.exports = { createWarning, emitWarning }
+module.exports = {
+  createWarning,
+  emitWarning,
+  emittedWarnings
+}
