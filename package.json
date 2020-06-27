@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "A small utility for creating warnings and emitting them.",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "standard && ava -v && tsd"
   },
