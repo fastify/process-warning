@@ -44,6 +44,14 @@ createWarning('FastifyDeprecation', 'FST_ERROR_CODE', 'Hello %s')
 emitWarning('FST_ERROR_CODE', 'world')
 ```
 
+The module also exports an `emittedWarnings` [Map](https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Map), which contains all the warnings already emitted. Useful for testing.
+```js
+const { createWarning, emitWarning, emittedWarnings } = require('fastify-deprecation')
+createWarning('FastifyDeprecation', 'FST_ERROR_CODE', 'Hello %s')
+emitWarning('FST_ERROR_CODE', 'world')
+console.log(emittedWarnings.get('FST_ERROR_CODE')) // true
+```
+
 ## License
 
 Licensed under [MIT](./LICENSE).
