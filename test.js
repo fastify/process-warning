@@ -1,9 +1,7 @@
 'use strict'
 
-/* eslint no-prototype-builtins: 0 */
-
 const test = require('ava')
-const { createWarning, emitWarning } = require('./')
+const { createWarning, emitWarning, emittedWarnings } = require('./')
 
 process.removeAllListeners('warning')
 
@@ -83,12 +81,13 @@ test('Create the warning without the new keyword', t => {
 })
 
 test.cb('emitWarning should emit a given code only once', t => {
-  t.plan(3)
+  t.plan(4)
   process.on('warning', onWarning)
   function onWarning (warning) {
     t.is(warning.name, 'FastifyDeprecation')
     t.is(warning.code, 'CODE')
     t.is(warning.message, 'Hello world')
+    t.true(emittedWarnings.get('CODE'))
   }
 
   createWarning('FastifyDeprecation', 'CODE', 'Hello world')
@@ -102,12 +101,13 @@ test.cb('emitWarning should emit a given code only once', t => {
 })
 
 test.cb('emitWarning with interpolated string', t => {
-  t.plan(3)
+  t.plan(4)
   process.on('warning', onWarning)
   function onWarning (warning) {
     t.is(warning.name, 'FastifyDeprecation')
     t.is(warning.code, 'CODE')
     t.is(warning.message, 'Hello world')
+    t.true(emittedWarnings.get('CODE'))
   }
 
   createWarning('FastifyDeprecation', 'CODE', 'Hello %s')
