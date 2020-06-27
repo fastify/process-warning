@@ -1,0 +1,33 @@
+{
+  "name": "fastify-deprecation",
+  "version": "0.1.0",
+  "description": "A small utility for creating warnings and emitting them.",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && ava -v && tsd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fastify/fastify-deprecation.git"
+  },
+  "keywords": [
+    "fastify",
+    "error",
+    "warning",
+    "utility",
+    "plugin",
+    "emit",
+    "once"
+  ],
+  "author": "Tomas Della Vedova",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fastify/fastify-deprecation/issues"
+  },
+  "homepage": "https://github.com/fastify/fastify-deprecation#readme",
+  "devDependencies": {
+    "ava": "^3.9.0",
+    "standard": "^14.3.4",
+    "tsd": "^0.11.0"
+  }
+}
