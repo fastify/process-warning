@@ -1,13 +1,13 @@
-# fastify-deprecation
+# fastify-warning
 
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)  ![build](https://github.com/fastify/fastify-deprecation/workflows/build/badge.svg)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)  ![build](https://github.com/fastify/fastify-warning/workflows/build/badge.svg)
 
 A small utility, used by Fastify itself, for generating consistent warning objects across your codebase and plugins.
 It also exposes a utility for emitting those warnings, guaranteeing that they are issued only once.
 
 ### Install
 ```
-npm i fastify-deprecation
+npm i fastify-warning
 ```
 
 ### Usage
