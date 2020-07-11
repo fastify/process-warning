@@ -12,44 +12,49 @@ npm i fastify-warning
 
 ### Usage
 
-The module exports a function named `createWarning` that you can use consistent warning objects, it takes 3 parameters.
+The module exports a builder function that returns an utility for creating warning and emitting them.
+
+```js
+const warning = require('fastify-warning')()
+```
 
 ```
-createWarning(name, code, message)
+warning.create(name, code, message)
 ```
 
-- `name` (`string`, required) - The error name, you can access it later with `error.name`. For consistency, we recommend to prefix the plugins error names with `FastifyDeprecation{YourPluginName}`
+- `name` (`string`, required) - The error name, you can access it later with `error.name`. For consistency, we recommend to prefix the plugins error names with `FastifWarning{YourPluginName}`
 - `code` (`string`, required) - The warning code, you can access it later with `error.code`. For consistency, we recommend to prefix the plugins error codes with `FST_{YourPluginName}_`
 - `message` (`string`, required) - The warning message. You can also use interpolated strings for formatting the message.
 
-It also exports a function named `emitWarning`, that you can use for emitting the warnings you have previously created, by passing their respective code. A warning is guaranteed to be emitted only once.
+The utility also contains an `emit` function, that you can use for emitting the warnings you have previously created, by passing their respective code. A warning is guaranteed to be emitted only once.
 
 ```
-emitWarning(code [, a [, b [, c]]])
+warning.emit(code [, a [, b [, c]]])
 ```
 
 - `code` (`string`, required) - The warning code you intend to emit.
 - `[, a [, b [, c]]]` (`any`, optional) - Parameters for string interpolation.
 
 ```js
-const { createWarning, emitWarning } = require('fastify-deprecation')
-createWarning('FastifyDeprecation', 'FST_ERROR_CODE', 'message')
-emitWarning('FST_ERROR_CODE')
+const warning = require('fastify-warning')()
+warning.create('FastifyWarning', 'FST_ERROR_CODE', 'message')
+warning.emit('FST_ERROR_CODE')
 ```
 
 How to use a interpolated string:
 ```js
-const { createWarning, emitWarning } = require('fastify-deprecation')
-createWarning('FastifyDeprecation', 'FST_ERROR_CODE', 'Hello %s')
-emitWarning('FST_ERROR_CODE', 'world')
+const warning = require('fastify-warning')()
+warning.create('FastifyWarning', 'FST_ERROR_CODE', 'Hello %s')
+warning.emit('FST_ERROR_CODE', 'world')
 ```
 
-The module also exports an `emittedWarnings` [Map](https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Map), which contains all the warnings already emitted. Useful for testing.
+The module also exports an `warning.emitted` [Map](https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Map), which contains all the warnings already emitted. Useful for testing.
 ```js
-const { createWarning, emitWarning, emittedWarnings } = require('fastify-deprecation')
-createWarning('FastifyDeprecation', 'FST_ERROR_CODE', 'Hello %s')
-emitWarning('FST_ERROR_CODE', 'world')
-console.log(emittedWarnings.get('FST_ERROR_CODE')) // true
+const warning = require('fastify-warning')()
+warning.create('FastifyWarning', 'FST_ERROR_CODE', 'Hello %s')
+console.log(warning.emitted.get('FST_ERROR_CODE')) // false
+warning.emit('FST_ERROR_CODE', 'world')
+console.log(warning.emitted.get('FST_ERROR_CODE')) // true
 ```
 
 ## License
