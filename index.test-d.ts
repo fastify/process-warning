@@ -1,15 +1,11 @@
 import { expectType } from 'tsd'
-import {
-  FastifyWarning,
-  createWarning,
-  emitWarning,
-  emittedWarnings
-} from './'
+import Warinig, { FastifyWarning } from './'
 
-const warn = createWarning('FastifyWarning', 'CODE', 'message')
+const warning = Warinig()
+const warn = warning.create('FastifyWarning', 'CODE', 'message')
 expectType<FastifyWarning>(warn)
 expectType<string>(warn.code)
 expectType<string>(warn.message)
 
-expectType<void>(emitWarning('CODE'))
-expectType<Map<string, boolean>>(emittedWarnings)
+expectType<void>(warning.emit('CODE'))
+expectType<Map<string, boolean>>(warning.emitted)

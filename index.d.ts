@@ -1,18 +1,13 @@
-export interface FastifyWarning extends Error {
+declare function warning (): Warning
+
+export declare class FastifyWarning extends Error {
   code: string
 }
 
-export declare function createWarning (
-  name: string,
-  code: string,
-  message: string
-): FastifyWarning
+interface Warning {
+  create(name: string, code: string, message: string): FastifyWarning,
+  emit(cod: string, a?: any, b?: any, c?: any): void,
+  emitted: Map<string, boolean>
+}
 
-export declare function emitWarning (
-  code: string,
-  a?: any,
-  b?: any,
-  c?: any
-): void
-
-export const emittedWarnings: Map<string, boolean>
+export default warning
