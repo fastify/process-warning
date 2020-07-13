@@ -12,7 +12,7 @@ npm i fastify-warning
 
 ### Usage
 
-The module exports a builder function that returns an utility for creating warning and emitting them.
+The module exports a builder function that returns an utility for creating warnings and emitting them.
 
 ```js
 const warning = require('fastify-warning')()
