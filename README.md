@@ -23,7 +23,7 @@ warning.create(name, code, message)
 - `code` (`string`, required) - The warning code, you can access it later with `error.code`. For consistency, we recommend to prefix plugin error codes with `FST_{YourPluginName}_`
 - `message` (`string`, required) - The warning message. You can also use interpolated strings for formatting the message.
 
-The utility also contains an `emit` function, that you can use for emitting the warnings you have previously created, by passing their respective code. A warning is guaranteed to be emitted only once.
+The utility also contains an `emit` function that you can use for emitting the warnings you have previously created by passing their respective code. A warning is guaranteed to be emitted only once.
 
 ```
 warning.emit(code [, a [, b [, c]]])
