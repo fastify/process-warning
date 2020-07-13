@@ -19,7 +19,7 @@ const warning = require('fastify-warning')()
 
 warning.create(name, code, message)
 
-- `name` (`string`, required) - The error name, you can access it later with `error.name`. For consistency, we recommend to prefix the plugins error names with `FastifWarning{YourPluginName}`
+- `name` (`string`, required) - The error name, you can access it later with `error.name`. For consistency, we recommend to prefix plugin error names with `FastifWarning{YourPluginName}`
 - `code` (`string`, required) - The warning code, you can access it later with `error.code`. For consistency, we recommend to prefix plugin error codes with `FST_{YourPluginName}_`
 - `message` (`string`, required) - The warning message. You can also use interpolated strings for formatting the message.
 
