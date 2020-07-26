@@ -16,8 +16,13 @@ The module exports a builder function that returns an utility for creating warni
 
 ```js
 const warning = require('fastify-warning')()
+```
 
+#### Methods
+
+```
 warning.create(name, code, message)
+```
 
 - `name` (`string`, required) - The error name, you can access it later with `error.name`. For consistency, we recommend to prefix plugin error names with `FastifWarning{YourPluginName}`
 - `code` (`string`, required) - The warning code, you can access it later with `error.code`. For consistency, we recommend to prefix plugin error codes with `FST_{YourPluginName}_`
