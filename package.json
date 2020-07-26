@@ -1,0 +1,34 @@
+{
+  "name": "fastify-warning",
+  "version": "0.1.0",
+  "description": "A small utility for creating warnings and emitting them.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "standard && ava -v && tsd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fastify/fastify-warning.git"
+  },
+  "keywords": [
+    "fastify",
+    "error",
+    "warning",
+    "utility",
+    "plugin",
+    "emit",
+    "once"
+  ],
+  "author": "Tomas Della Vedova",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fastify/fastify-warning/issues"
+  },
+  "homepage": "https://github.com/fastify/fastify-warning#readme",
+  "devDependencies": {
+    "ava": "^3.10.1",
+    "standard": "^14.3.4",
+    "tsd": "^0.13.1"
+  }
+}
