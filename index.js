@@ -1,6 +1,6 @@
 'use strict'
 
-const { inherits, format } = require('util')
+const { format } = require('util')
 
 function build () {
   const codes = {}
@@ -17,35 +17,28 @@ function build () {
       throw new Error(`The code '${code}' already exist`)
     }
 
-    function FastifyWarning (a, b, c) {
-      if (!(this instanceof FastifyWarning)) {
-        return new FastifyWarning(a, b, c)
-      }
-      Error.captureStackTrace(this, FastifyWarning)
-      this.name = name
-      this.code = code
-
+    function buildWarnOpts (a, b, c) {
       // more performant than spread (...) operator
+      let formatted
       if (a && b && c) {
-        this.message = format(message, a, b, c)
+        formatted = format(message, a, b, c)
       } else if (a && b) {
-        this.message = format(message, a, b)
+        formatted = format(message, a, b)
       } else if (a) {
-        this.message = format(message, a)
+        formatted = format(message, a)
       } else {
-        this.message = message
+        formatted = message
+      }
+
+      return {
+        code,
+        name,
+        message: formatted
       }
     }
-    FastifyWarning.prototype[Symbol.toStringTag] = 'Warning'
-
-    FastifyWarning.prototype.toString = function () {
-      return `${this.name} [${this.code}]: ${this.message}`
-    }
-
-    inherits(FastifyWarning, Error)
 
     emitted.set(code, false)
-    codes[code] = FastifyWarning
+    codes[code] = buildWarnOpts
 
     return codes[code]
   }
@@ -54,7 +47,9 @@ function build () {
     if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
     if (emitted.get(code) === true) return
     emitted.set(code, true)
-    process.emitWarning(new codes[code](a, b, c))
+
+    const warning = codes[code](a, b, c)
+    process.emitWarning(warning.message, warning.name, warning.code)
   }
 
   return {
