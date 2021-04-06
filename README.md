@@ -1,6 +1,9 @@
 # fastify-warning
 
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)  ![build](https://github.com/fastify/fastify-warning/workflows/build/badge.svg)
+![CI](https://github.com/fastify/fastify-warning/workflows/CI/badge.svg)
+[![NPM version](https://img.shields.io/npm/v/fastify-warning.svg?style=flat)](https://www.npmjs.com/package/fastify-warning)
+[![Known Vulnerabilities](https://snyk.io/test/github/fastify/fastify-warning/badge.svg)](https://snyk.io/test/github/fastify/fastify-warning)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
 A small utility, used by Fastify itself, for generating consistent warning objects across your codebase and plugins.
 It also exposes a utility for emitting those warnings, guaranteeing that they are issued only once.
