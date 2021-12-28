@@ -1,5 +1,5 @@
 {
-  "name": "fastify-warning",
+  "name": "process-warning",
   "version": "0.2.0",
   "description": "A small utility for creating warnings and emitting them.",
   "main": "index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fastify/fastify-warning.git"
+    "url": "git+https://github.com/fastify/processs-warning.git"
   },
   "keywords": [
     "fastify",

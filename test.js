@@ -46,7 +46,7 @@ test('Should throw when error code has no fastify name', t => {
   try {
     create()
   } catch (err) {
-    t.is(err.message, 'Fastify warning name must not be empty')
+    t.is(err.message, 'Warning name must not be empty')
   }
 })
 
@@ -55,7 +55,7 @@ test('Should throw when error has no code', t => {
   try {
     create('name')
   } catch (err) {
-    t.is(err.message, 'Fastify warning code must not be empty')
+    t.is(err.message, 'Warning code must not be empty')
   }
 })
 
@@ -64,7 +64,7 @@ test('Should throw when error has no message', t => {
   try {
     create('name', 'code')
   } catch (err) {
-    t.is(err.message, 'Fastify warning message must not be empty')
+    t.is(err.message, 'Warning message must not be empty')
   }
 })
 
