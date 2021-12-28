@@ -7,9 +7,9 @@ function build () {
   const emitted = new Map()
 
   function create (name, code, message) {
-    if (!name) throw new Error('Fastify warning name must not be empty')
-    if (!code) throw new Error('Fastify warning code must not be empty')
-    if (!message) throw new Error('Fastify warning message must not be empty')
+    if (!name) throw new Error('Warning name must not be empty')
+    if (!code) throw new Error('Warning code must not be empty')
+    if (!message) throw new Error('Warning message must not be empty')
 
     code = code.toUpperCase()
 
