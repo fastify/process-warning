@@ -11,7 +11,7 @@ It also exposes a utility for emitting those warnings, guaranteeing that they ar
 This module is used by the [Fastify](https://fastify.io) framework and it was called `fastify-warning` prior to version 1.0.0.
 
 ### Install
-t
+
 ```
 npm i process-warning
 ```
