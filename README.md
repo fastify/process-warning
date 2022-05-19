@@ -2,7 +2,6 @@
 
 ![CI](https://github.com/fastify/process-warning/workflows/CI/badge.svg)
 [![NPM version](https://img.shields.io/npm/v/process-warning.svg?style=flat)](https://www.npmjs.com/package/process-warning)
-[![Known Vulnerabilities](https://snyk.io/test/github/fastify/process-warning/badge.svg)](https://snyk.io/test/github/fastify/process-warning)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
 A small utility for generating consistent warning objects across your codebase.
