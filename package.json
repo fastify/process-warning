@@ -8,7 +8,7 @@
     "lint": "standard",
     "test": "npm run test:unit && npm run test:jest && npm run test:typescript",
     "test:jest": "jest jest.test.js",
-    "test:unit": "TAP_BUFFER=0 tap",
+    "test:unit": "tap",
     "test:typescript": "tsd"
   },
   "repository": {
