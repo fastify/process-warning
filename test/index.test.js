@@ -78,7 +78,7 @@ test('Should throw if emit is called with unknown code ', t => {
 
   const { emit } = build()
 
-  t.throws(() => emit('CODE'), new Error(`The code 'CODE' does not exist`))
+  t.throws(() => emit('CODE'), new Error('The code \'CODE\' does not exist'))
 })
 
 test('Cannot reuse the same code more than once', t => {
