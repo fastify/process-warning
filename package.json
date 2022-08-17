@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "A small utility for creating warnings and emitting them.",
   "main": "index.js",
-  "types": "index.d.ts",
+  "types": "types/index.d.ts",
   "scripts": {
     "lint": "standard",
     "test": "npm run test:unit && npm run test:jest && npm run test:typescript",
