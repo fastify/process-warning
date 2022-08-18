@@ -1,5 +1,5 @@
 import { expectType } from 'tsd'
-import Warinig, { BuildWarnOptsFn, WarnOpts } from './'
+import Warinig, { BuildWarnOptsFn, WarnOpts } from '..'
 
 const warning = Warinig()
 const buildWarnOpts = warning.create('FastifyWarning', 'CODE', 'message')

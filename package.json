@@ -3,9 +3,13 @@
   "version": "2.0.0",
   "description": "A small utility for creating warnings and emitting them.",
   "main": "index.js",
-  "types": "index.d.ts",
+  "types": "types/index.d.ts",
   "scripts": {
-    "test": "standard && ava -v test.js && jest jest.test.js && tsd"
+    "lint": "standard",
+    "test": "npm run test:unit && npm run test:jest && npm run test:typescript",
+    "test:jest": "jest jest.test.js",
+    "test:unit": "tap",
+    "test:typescript": "tsd"
   },
   "repository": {
     "type": "git",
@@ -27,9 +31,9 @@
   },
   "homepage": "https://github.com/fastify/fastify-warning#readme",
   "devDependencies": {
-    "ava": "^3.10.1",
     "jest": "^28.1.0",
     "standard": "^17.0.0",
+    "tap": "^16.3.0",
     "tsd": "^0.22.0"
   }
 }

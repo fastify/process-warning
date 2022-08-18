@@ -1,7 +1,7 @@
 /* global test, expect */
 'use strict'
 
-const build = require('./')
+const build = require('..')
 
 test('works with jest', done => {
   const { create, emit, emitted } = build()
