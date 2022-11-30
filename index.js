@@ -3,7 +3,7 @@
 const { format } = require('util')
 
 function build () {
-  const codes = {}
+  const codes = new Map()
   const emitted = new Set()
 
   function create (name, code, message) {
@@ -13,7 +13,7 @@ function build () {
 
     code = code.toUpperCase()
 
-    if (codes[code] !== undefined) {
+    if (codes.has(code) || emitted.has(code)) {
       throw new Error(`The code '${code}' already exist`)
     }
 
@@ -37,18 +37,23 @@ function build () {
       }
     }
 
-    codes[code] = buildWarnOpts
+    codes.set(code, buildWarnOpts)
 
-    return codes[code]
+    return buildWarnOpts
   }
 
   function emit (code, a, b, c) {
-    if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
-    if (emitted.has(code)) return
+    if (emitted.has(code)) {
+      return
+    }
+    if (codes.has(code) === false) {
+      throw new Error(`The code '${code}' does not exist`)
+    }
     emitted.add(code)
 
-    const warning = codes[code](a, b, c)
+    const warning = codes.get(code)(a, b, c)
     process.emitWarning(warning.message, warning.name, warning.code)
+    codes.delete(code)
   }
 
   return {
