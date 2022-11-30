@@ -4,7 +4,7 @@ const { format } = require('util')
 
 function build () {
   const codes = {}
-  const emitted = new Map()
+  const emitted = new Set()
 
   function create (name, code, message) {
     if (!name) throw new Error('Warning name must not be empty')
@@ -37,7 +37,6 @@ function build () {
       }
     }
 
-    emitted.set(code, false)
     codes[code] = buildWarnOpts
 
     return codes[code]
@@ -45,8 +44,8 @@ function build () {
 
   function emit (code, a, b, c) {
     if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
-    if (emitted.get(code) === true) return
-    emitted.set(code, true)
+    if (emitted.has(code)) return
+    emitted.add(code)
 
     const warning = codes[code](a, b, c)
     process.emitWarning(warning.message, warning.name, warning.code)

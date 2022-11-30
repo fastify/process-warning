@@ -14,7 +14,7 @@ test('works with jest', done => {
   // we can only test it was emitted indirectly
   // and test no exception is raised
   setImmediate(() => {
-    expect(emitted.get('CODE')).toBeTruthy()
+    expect(emitted.has('CODE')).toBeTruthy()
     done()
   })
 })
