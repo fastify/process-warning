@@ -11,4 +11,4 @@ expectType<string>(opts.message)
 expectType<string>(opts.name)
 
 expectType<void>(warning.emit('CODE'))
-expectType<Map<string, boolean>>(warning.emitted)
+expectType<Set<string>>(warning.emitted)
