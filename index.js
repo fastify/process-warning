@@ -39,16 +39,12 @@ function build () {
 
     codes[code] = buildWarnOpts
 
-    return buildWarnOpts
+    return codes[code]
   }
 
   function emit (code, a, b, c) {
-    if (emitted[code] === true) {
-      return
-    }
-    if (codes[code] === undefined) {
-      throw new Error(`The code '${code}' does not exist`)
-    }
+    if (emitted[code] === true) return
+    if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
     emitted[code] = true
 
     const warning = codes[code](a, b, c)
