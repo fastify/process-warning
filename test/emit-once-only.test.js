@@ -13,7 +13,7 @@ test('emit should emit a given code only once', t => {
     t.equal(warning.name, 'FastifyDeprecation')
     t.equal(warning.code, 'CODE')
     t.equal(warning.message, 'Hello world')
-    t.ok(emitted.has('CODE'))
+    t.ok(emitted.CODE)
   }
 
   create('FastifyDeprecation', 'CODE', 'Hello world')

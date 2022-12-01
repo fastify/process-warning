@@ -11,7 +11,7 @@ export type BuildWarnOptsFn = (a?: any, b?: any, c?: any) => WarnOpts
 interface Warning {
   create(name: string, code: string, message: string): BuildWarnOptsFn,
   emit(cod: string, a?: any, b?: any, c?: any): void,
-  emitted: Set<string>
+  emitted: { [key: string]: boolean }
 }
 
 export default warning

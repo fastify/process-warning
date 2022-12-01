@@ -55,13 +55,13 @@ warning.create('FastifyWarning', 'FST_ERROR_CODE', 'Hello %s')
 warning.emit('FST_ERROR_CODE', 'world')
 ```
 
-The module also exports an `warning.emitted` [Set](https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Set), which contains all the warnings already emitted. Useful for testing.
+The module also exports an `warning.emitted` Object, which contains all the warnings already emitted. Useful for testing.
 ```js
 const warning = require('process-warning')()
 warning.create('FastifyWarning', 'FST_ERROR_CODE', 'Hello %s')
-console.log(warning.emitted.has('FST_ERROR_CODE')) // false
+console.log(warning.emitted.FST_ERROR_CODE) // false
 warning.emit('FST_ERROR_CODE', 'world')
-console.log(warning.emitted.has('FST_ERROR_CODE')) // true
+console.log(warning.emitted.FST_ERROR_CODE) // true
 ```
 
 ## License
