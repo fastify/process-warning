@@ -46,7 +46,7 @@ function build () {
     if (emitted[code] === true) {
       return
     }
-    if (codes[code] === undefined)  {
+    if (codes[code] === undefined) {
       throw new Error(`The code '${code}' does not exist`)
     }
     emitted[code] = true

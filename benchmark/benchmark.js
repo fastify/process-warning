@@ -10,7 +10,7 @@ new Suite()
   })
   // add listeners
   .on('cycle', function (event) {
-    console.log(String(event.target));
+    console.log(String(event.target))
   })
   // run async
-  .run();
+  .run()
