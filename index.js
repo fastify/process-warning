@@ -38,12 +38,11 @@ function build () {
     }
 
     codes[code] = buildWarnOpts
-
     return codes[code]
   }
 
   function emit (code, a, b, c) {
-    if (emitted[code] === true) return
+    if (code in emitted) return
     if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
     emitted[code] = true
 
