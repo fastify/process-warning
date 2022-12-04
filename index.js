@@ -44,8 +44,8 @@ function processWarning () {
   }
 
   function emit (code, a, b, c) {
-    if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
     if (emitted.get(code) === true) return
+    if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
     emitted.set(code, true)
 
     const warning = codes[code](a, b, c)
