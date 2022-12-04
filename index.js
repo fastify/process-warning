@@ -2,7 +2,7 @@
 
 const { format } = require('util')
 
-function build () {
+function processWarning () {
   const codes = {}
   const emitted = new Map()
 
@@ -59,4 +59,6 @@ function build () {
   }
 }
 
-module.exports = build
+module.exports = processWarning
+module.exports.default = processWarning
+module.exports.processWarning = processWarning
