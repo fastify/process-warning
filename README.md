@@ -5,7 +5,7 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
 A small utility for generating consistent warning objects across your codebase.
-It also exposes a utility for emitting those warnings, guaranteeing that they are issued only once (or more by setting it).
+It also exposes a utility for emitting those warnings, guaranteeing that they are issued only once (unless configured otherwise).
 
 This module is used by the [Fastify](https://fastify.io) framework and it was called `fastify-warning` prior to version 1.0.0.
 
