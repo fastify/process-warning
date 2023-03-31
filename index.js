@@ -47,7 +47,7 @@ function processWarning () {
   }
 
   function emit (code, a, b, c) {
-    if (emitted.get(code) === true && !unlimited) return
+    if (emitted.get(code) === true && unlimited === false) return
     if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
     emitted.set(code, true)
 
