@@ -32,7 +32,8 @@ warning.create(name, code, message, unlimited)
 - `name` (`string`, required) - The error name, you can access it later with `error.name`. For consistency, we recommend prefixing module error names with `{YourModule}Warning`
 - `code` (`string`, required) - The warning code, you can access it later with `error.code`. For consistency, we recommend prefixing plugin error codes with `{ThreeLetterModuleName}_`, e.g. `FST_`. NOTE: codes should be all uppercase.
 - `message` (`string`, required) - The warning message. You can also use interpolated strings for formatting the message.
-- `unlimitedEmits` (`boolean`, optional) - Should the warning be emitted more than once? Defaults to `false`.
+- `options` (`object`, optional) - Optional options with the following properties:
+  - `unlimited` (`boolean`, optional) - Should the warning be emitted more than once? Defaults to `false`.
 
 The utility also contains an `emit` function that you can use for emitting the warnings you have previously created by passing their respective code. A warning is guaranteed to be emitted only once.
 
@@ -68,7 +69,7 @@ console.log(warning.emitted.get('FST_ERROR_CODE')) // true
 How to use an unlimited warning:
 ```js
 const warning = require('process-warning')()
-warning.create('FastifyWarning', 'FST_ERROR_CODE', 'Hello %s', true)
+warning.create('FastifyWarning', 'FST_ERROR_CODE', 'Hello %s', { unlimited: true })
 warning.emit('FST_ERROR_CODE', 'world') // will be emitted
 warning.emit('FST_ERROR_CODE', 'world') // will be emitted again
 ```

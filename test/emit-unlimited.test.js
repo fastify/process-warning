@@ -21,7 +21,7 @@ test('emit should emit a given code unlimited times', t => {
     t.equal(runs++, expectedRun.shift())
   }
 
-  create('FastifyDeprecation', 'CODE', 'Hello world', true)
+  create('FastifyDeprecation', 'CODE', 'Hello world', { unlimited: true })
 
   for (let i = 0; i < times; i++) {
     expectedRun.push(i)
