@@ -89,3 +89,11 @@ test('Cannot reuse the same code more than once', t => {
 
   t.throws(() => create('FastifyWarning', 'CODE', 'Not available'), new Error("The code 'CODE' already exist"))
 })
+
+test('Cannot set unlimited other than boolean', t => {
+  t.plan(1)
+
+  const { create } = build()
+
+  t.throws(() => create('FastifyWarning', 'CODE', 'Msg', { unlimited: 42 }), new Error('Warning opts.unlimited must be a boolean'))
+})

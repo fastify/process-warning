@@ -5,11 +5,13 @@ const { format } = require('util')
 function processWarning () {
   const codes = {}
   const emitted = new Map()
+  const opts = Object.create(null)
 
-  function create (name, code, message) {
+  function create (name, code, message, { unlimited = false } = {}) {
     if (!name) throw new Error('Warning name must not be empty')
     if (!code) throw new Error('Warning code must not be empty')
     if (!message) throw new Error('Warning message must not be empty')
+    if (typeof unlimited !== 'boolean') throw new Error('Warning opts.unlimited must be a boolean')
 
     code = code.toUpperCase()
 
@@ -37,14 +39,15 @@ function processWarning () {
       }
     }
 
-    emitted.set(code, false)
+    Object.assign(opts, { unlimited })
+    emitted.set(code, unlimited)
     codes[code] = buildWarnOpts
 
     return codes[code]
   }
 
   function emit (code, a, b, c) {
-    if (emitted.get(code) === true) return
+    if (emitted.get(code) === true && opts.unlimited === false) return
     if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
     emitted.set(code, true)
 
