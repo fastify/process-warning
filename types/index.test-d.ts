@@ -12,3 +12,6 @@ expectType<string>(opts.name)
 
 expectType<void>(warning.emit('CODE'))
 expectType<Map<string, boolean>>(warning.emitted)
+
+const buildWarnUnlimited = warning.create('FastifyWarning', 'CODE', 'message', { unlimited: true })
+expectType<BuildWarnOptsFn>(buildWarnUnlimited)
