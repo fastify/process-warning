@@ -26,7 +26,7 @@ const warning = require('process-warning')()
 #### Methods
 
 ```
-warning.create(name, code, message, unlimited)
+warning.create(name, code, message[, options])
 ```
 
 - `name` (`string`, required) - The error name, you can access it later with `error.name`. For consistency, we recommend prefixing module error names with `{YourModule}Warning`
