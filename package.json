@@ -1,6 +1,6 @@
 {
   "name": "process-warning",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "A small utility for creating warnings and emitting them.",
   "main": "index.js",
   "types": "types/index.d.ts",
