@@ -1,6 +1,6 @@
 'use strict'
 
-const { format } = require('util')
+const { format } = require('node:util')
 
 function processWarning () {
   const codes = {}
