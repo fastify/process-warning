@@ -74,6 +74,18 @@ warning.emit('FST_ERROR_CODE', 'world') // will be emitted
 warning.emit('FST_ERROR_CODE', 'world') // will be emitted again
 ```
 
+#### Suppressing warnings
+
+It is possible to suppress warnings by utilizing node's built-in warning suppression mechanism.
+
+Warnings can be suppressed:
+
+- by setting the `NODE_NO_WARNINGS` environment variable to `1`
+- by passing the `--no-warnings` flag to the node process
+- by setting 'no-warnings' in the `NODE_OPTIONS` environment variable
+
+For more information see [node's documentation](https://nodejs.org/api/cli.html).
+
 ## License
 
 Licensed under [MIT](./LICENSE).
