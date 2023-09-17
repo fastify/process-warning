@@ -76,7 +76,7 @@ warning.emit('FST_ERROR_CODE', 'world') // will be emitted again
 
 #### Suppressing warnings
 
-It is possible to suppress warnings by utilizing node's built-in warning suppression mechanism.
+It is possible to suppress warnings by utilizing one of node's built-in warning suppression mechanisms.
 
 Warnings can be suppressed:
 
