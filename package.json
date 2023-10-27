@@ -3,6 +3,7 @@
   "version": "2.2.0",
   "description": "A small utility for creating warnings and emitting them.",
   "main": "index.js",
+  "type": "commonjs",
   "types": "types/index.d.ts",
   "scripts": {
     "lint": "standard",
