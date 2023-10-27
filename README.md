@@ -25,21 +25,35 @@ const warning = require('process-warning')()
 
 #### Methods
 
-```
-warning.create(name, code, message[, options])
-```
+##### `warning.create(name, code, message[, options])`
 
-- `name` (`string`, required) - The error name, you can access it later with `error.name`. For consistency, we recommend prefixing module error names with `{YourModule}Warning`
-- `code` (`string`, required) - The warning code, you can access it later with `error.code`. For consistency, we recommend prefixing plugin error codes with `{ThreeLetterModuleName}_`, e.g. `FST_`. NOTE: codes should be all uppercase.
-- `message` (`string`, required) - The warning message. You can also use interpolated strings for formatting the message.
-- `options` (`object`, optional) - Optional options with the following properties:
-  - `unlimited` (`boolean`, optional) - Should the warning be emitted more than once? Defaults to `false`.
+- `name` (`string`, required) - The error name, you can access it later with
+`error.name`. For consistency, we recommend prefixing module error names
+with `{YourModule}Warning`
+- `code` (`string`, required) - The warning code, you can access it later with
+`error.code`. For consistency, we recommend prefixing plugin error codes with
+`{ThreeLetterModuleName}_`, e.g. `FST_`. NOTE: codes should be all uppercase.
+- `message` (`string`, required) - The warning message. You can also use
+interpolated strings for formatting the message.
+- `options` (`object`, optional) - Optional options with the following
+properties:
+  + `unlimited` (`boolean`, optional) - Should the warning be emitted more than
+  once? Defaults to `false`.
 
-The utility also contains an `emit` function that you can use for emitting the warnings you have previously created by passing their respective code. A warning is guaranteed to be emitted only once.
 
-```
-warning.emit(code [, a [, b [, c]]])
-```
+##### `warning.createDeprecation(code, message[, options])`
+
+This is a wrapper for `warning.create`. It is equivalent to invoking
+`warning.create` with the `name` parameter set to "DeprecationWarning".
+
+Deprecation warnings have extended support for the Node.js CLI options:
+`--throw-deprecation`, `--no-deprecation`, and `--trace-deprecation`.
+
+##### `warning.emit(code [, a [, b [, c]]])`
+
+The utility also contains an `emit` function that you can use for emitting the
+warnings you have previously created by passing their respective code.
+A warning is guaranteed to be emitted at least once.
 
 - `code` (`string`, required) - The warning code you intend to emit.
 - `[, a [, b [, c]]]` (`any`, optional) - Parameters for string interpolation.
