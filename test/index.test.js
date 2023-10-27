@@ -49,6 +49,17 @@ test('Create error with 3 parameters', t => {
   t.equal(opts.code, 'CODE')
 })
 
+test('Creates a deprecation warning', t => {
+  t.plan(3)
+
+  const manager = build()
+  const builder = manager.createDeprecation('CODE', 'hello %s')
+  const warning = builder('world')
+  t.equal(warning.name, 'DeprecationWarning')
+  t.equal(warning.message, 'hello world')
+  t.equal(warning.code, 'CODE')
+})
+
 test('Should throw when error code has no fastify name', t => {
   t.plan(1)
 
