@@ -8,6 +8,7 @@
   "scripts": {
     "lint": "standard",
     "lint:fix": "standard --fix",
+    "benchmark": "node benchmarks/warn.js",
     "test": "npm run test:unit && npm run test:jest && npm run test:typescript",
     "test:jest": "jest jest.test.js",
     "test:unit": "tap",
