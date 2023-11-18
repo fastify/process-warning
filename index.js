@@ -43,7 +43,6 @@ const { format } = require('node:util')
 function processWarning () {
   const codes = {}
   const emitted = new Map()
-  const opts = Object.create(null)
 
   /**
    * Builds a new {@link ProcessWarning} and adds it to the
@@ -91,8 +90,12 @@ function processWarning () {
       }
     }
 
-    Object.assign(opts, { unlimited })
-    emitted.set(code, unlimited)
+    // We need to manage 4 states:
+    // - START: code 0: unlimited emission
+    // - END: code -1: unlimited event emitted
+    // - START: code 1 (default): limited emission to 1
+    // - END: code 2: limited event emitted
+    emitted.set(code, unlimited ? 0 : 1)
     codes[code] = buildWarnOpts
 
     return codes[code]
@@ -137,9 +140,10 @@ function processWarning () {
    * @param {*} [c] Possible message interpolation value.
    */
   function emit (code, a, b, c) {
-    if (emitted.get(code) === true && opts.unlimited === false) return
+    const state = emitted.get(code)
+    if (state === 2) return
     if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
-    emitted.set(code, true)
+    emitted.set(code, state <= 0 ? -1 : (state + 1))
 
     const warning = codes[code](a, b, c)
     process.emitWarning(warning.message, warning.name, warning.code)
@@ -149,7 +153,12 @@ function processWarning () {
     create,
     createDeprecation,
     emit,
-    emitted
+    emitted: {
+      get (code) {
+        const state = emitted.get(code)
+        return state === -1 || state === 2
+      }
+    }
   }
 }
 
