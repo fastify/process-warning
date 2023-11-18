@@ -45,6 +45,31 @@ function processWarning () {
   const emitted = new Map()
 
   /**
+   * @typedef {number} STATE_CONSTANT
+   */
+
+  /**
+   * @private
+   * @typdef {object} EMISSION_STATES
+   * @property {STATE_CONSTANT} UNLIMITED_INITIAL Indicates that the warning
+   * is to be issued an unlimited number of times but has not yet been
+   * emitted.
+   * @property {STATE_CONSTANT} UNLIMITED_ONGOING Indicates that the warning
+   * is to be issued an unlimited number of times and has been emitted at least
+   * once.
+   * @property {STATE_CONSTANT} LIMITED_INITIAL Indicates that the warning
+   * is to be issued only once but has not yet been emitted.
+   * @property {STATE_CONSTANT} LIMITED_FINAL Indicates that the warning
+   * is to be issued only once and has already been emitted.
+   */
+  const STATES = {
+    UNLIMITED_INITIAL: 0,
+    UNLIMITED_ONGOING: -1,
+    LIMITED_INITIAL: 1,
+    LIMITED_FINAL: 2
+  }
+
+  /**
    * Builds a new {@link ProcessWarning} and adds it to the
    * {@link ProcessWarningManager} such that it can be emitted through the
    * {@link ProcessWarningManager#emit} method.
@@ -90,12 +115,7 @@ function processWarning () {
       }
     }
 
-    // We need to manage 4 states:
-    // - START: code 0: unlimited emission
-    // - END: code -1: unlimited event emitted
-    // - START: code 1 (default): limited emission to 1
-    // - END: code 2: limited event emitted
-    emitted.set(code, unlimited ? 0 : 1)
+    emitted.set(code, unlimited ? STATES.UNLIMITED_INITIAL : STATES.LIMITED_INITIAL)
     codes[code] = buildWarnOpts
 
     return codes[code]
@@ -141,9 +161,12 @@ function processWarning () {
    */
   function emit (code, a, b, c) {
     const state = emitted.get(code)
-    if (state === 2) return
+    if (state === STATES.LIMITED_FINAL) return
     if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
-    emitted.set(code, state <= 0 ? -1 : (state + 1))
+    emitted.set(
+      code,
+      state <= STATES.UNLIMITED_INITIAL ? STATES.UNLIMITED_ONGOING : STATES.LIMITED_FINAL
+    )
 
     const warning = codes[code](a, b, c)
     process.emitWarning(warning.message, warning.name, warning.code)
@@ -156,7 +179,7 @@ function processWarning () {
     emitted: {
       get (code) {
         const state = emitted.get(code)
-        return state === -1 || state === 2
+        return state === STATES.UNLIMITED_ONGOING || state === STATES.LIMITED_FINAL
       }
     }
   }
