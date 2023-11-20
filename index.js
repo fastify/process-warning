@@ -35,8 +35,7 @@ const { format } = require('node:util')
  * @returns ProcessWarning
  */
 
-
-  /**
+/**
    * @private
    * @typdef {object} EMISSION_STATES
    * @property {STATE_CONSTANT} UNLIMITED_INITIAL Indicates that the warning
@@ -50,12 +49,12 @@ const { format } = require('node:util')
    * @property {STATE_CONSTANT} LIMITED_FINAL Indicates that the warning
    * is to be issued only once and has already been emitted.
    */
-  const STATES = {
-    UNLIMITED_INITIAL: 0,
-    UNLIMITED_ONGOING: -1,
-    LIMITED_INITIAL: 1,
-    LIMITED_FINAL: 2
-  }
+const STATES = {
+  UNLIMITED_INITIAL: 0,
+  UNLIMITED_ONGOING: -1,
+  LIMITED_INITIAL: 1,
+  LIMITED_FINAL: 2
+}
 
 /**
  * Factory that builds a new {@link ProcessWarningManager} and returns it.
@@ -66,7 +65,7 @@ function processWarning () {
   const codes = {}
   const emitted = new Map()
 
-/**
+  /**
  * @typedef {number} STATE_CONSTANT
  */
 
