@@ -36,24 +36,28 @@ const { format } = require('node:util')
  */
 
 /**
-   * @private
-   * @typdef {object} EMISSION_STATES
-   * @property {STATE_CONSTANT} UNLIMITED_INITIAL Indicates that the warning
-   * is to be issued an unlimited number of times but has not yet been
-   * emitted.
-   * @property {STATE_CONSTANT} UNLIMITED_ONGOING Indicates that the warning
-   * is to be issued an unlimited number of times and has been emitted at least
-   * once.
-   * @property {STATE_CONSTANT} LIMITED_INITIAL Indicates that the warning
-   * is to be issued only once but has not yet been emitted.
-   * @property {STATE_CONSTANT} LIMITED_FINAL Indicates that the warning
-   * is to be issued only once and has already been emitted.
-   */
+ * @typedef {number} STATE_CONSTANT
+ */
+
+/**
+ * @private
+ * @typdef {object} EMISSION_STATES
+ * @property {STATE_CONSTANT} UNLIMITED_INITIAL Indicates that the warning
+ * is to be issued an unlimited number of times but has not yet been
+ * emitted.
+ * @property {STATE_CONSTANT} UNLIMITED_ONGOING Indicates that the warning
+ * is to be issued an unlimited number of times and has been emitted at least
+ * once.
+ * @property {STATE_CONSTANT} LIMITED_INITIAL Indicates that the warning
+ * is to be issued only once but has not yet been emitted.
+ * @property {STATE_CONSTANT} LIMITED_FINAL Indicates that the warning
+ * is to be issued only once and has already been emitted.
+ */
 const STATES = {
-  UNLIMITED_INITIAL: 0,
-  UNLIMITED_ONGOING: -1,
-  LIMITED_INITIAL: 1,
-  LIMITED_FINAL: 2
+  UNLIMITED_INITIAL: newBooleanState(0),
+  UNLIMITED_ONGOING: newBooleanState(-1),
+  LIMITED_INITIAL: newBooleanState(1),
+  LIMITED_FINAL: newBooleanState(2),
 }
 
 /**
@@ -62,12 +66,8 @@ const STATES = {
  * @returns ProcessWarningManager
  */
 function processWarning () {
-  const codes = {}
+  const codes = Object.create(null)
   const emitted = new Map()
-
-  /**
- * @typedef {number} STATE_CONSTANT
- */
 
   /**
    * Builds a new {@link ProcessWarning} and adds it to the
@@ -165,32 +165,18 @@ function processWarning () {
     if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
     emitted.set(
       code,
-      state <= STATES.UNLIMITED_INITIAL ? STATES.UNLIMITED_ONGOING : STATES.LIMITED_FINAL
+      state.stateCode <= STATES.UNLIMITED_INITIAL.stateCode ? STATES.UNLIMITED_ONGOING : STATES.LIMITED_FINAL
     )
 
     const warning = codes[code](a, b, c)
     process.emitWarning(warning.message, warning.name, warning.code)
   }
 
-  // const emitInterface = new Proxy(emitted, {
-  //   get (target, prop, receiver) {
-  //     const val = Reflect.get(emitted, prop, emitted);
-
-  //     if (prop === 'get') {
-  //       return function (code) {
-  //         const state = emitted.get(code)
-  //         return state === STATES.UNLIMITED_ONGOING || state === STATES.LIMITED_FINAL
-  //       }
-  //     }
-  //     return Reflect.get(emitted, prop, emitted);
-  //   }
-  // })
-
   return {
     create,
     createDeprecation,
     emit,
-    emitted: buildProxy(emitted)
+    emitted
   }
 }
 
@@ -198,27 +184,6 @@ module.exports = processWarning
 module.exports.default = processWarning
 module.exports.processWarning = processWarning
 
-/* istanbul ignore next */
-function buildProxy (emitted) {
-  return Object.create(emitted, {
-    delete: { value: function (code) { return emitted.delete(code) } },
-    clear: { value: function () { return emitted.clear() } },
-    set: {
-      value: function (code, newState) {
-        const state = emitted.get(code)
-        const isUnlimited = state === STATES.UNLIMITED_INITIAL || state === STATES.UNLIMITED_ONGOING
-        if (isUnlimited) {
-          return emitted.set(code, newState ? STATES.UNLIMITED_ONGOING : STATES.UNLIMITED_INITIAL)
-        } else {
-          return emitted.set(code, newState ? STATES.LIMITED_FINAL : STATES.LIMITED_INITIAL)
-        }
-      }
-    },
-    get: {
-      value: function (code) {
-        const state = emitted.get(code)
-        return state === STATES.UNLIMITED_ONGOING || state === STATES.LIMITED_FINAL
-      }
-    }
-  })
+function newBooleanState (code) {
+  return Object.create(Boolean, { stateCode: { value: code } })
 }
