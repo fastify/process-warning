@@ -57,7 +57,7 @@ const STATES = {
   UNLIMITED_INITIAL: newBooleanState(0),
   UNLIMITED_ONGOING: newBooleanState(-1),
   LIMITED_INITIAL: newBooleanState(1),
-  LIMITED_FINAL: newBooleanState(2),
+  LIMITED_FINAL: newBooleanState(2)
 }
 
 /**
