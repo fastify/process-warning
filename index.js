@@ -35,18 +35,6 @@ const { format } = require('node:util')
  * @returns ProcessWarning
  */
 
-/**
- * Factory that builds a new {@link ProcessWarningManager} and returns it.
- *
- * @returns ProcessWarningManager
- */
-function processWarning () {
-  const codes = {}
-  const emitted = new Map()
-
-  /**
-   * @typedef {number} STATE_CONSTANT
-   */
 
   /**
    * @private
@@ -68,6 +56,19 @@ function processWarning () {
     LIMITED_INITIAL: 1,
     LIMITED_FINAL: 2
   }
+
+/**
+ * Factory that builds a new {@link ProcessWarningManager} and returns it.
+ *
+ * @returns ProcessWarningManager
+ */
+function processWarning () {
+  const codes = {}
+  const emitted = new Map()
+
+/**
+ * @typedef {number} STATE_CONSTANT
+ */
 
   /**
    * Builds a new {@link ProcessWarning} and adds it to the
@@ -172,19 +173,53 @@ function processWarning () {
     process.emitWarning(warning.message, warning.name, warning.code)
   }
 
+  // const emitInterface = new Proxy(emitted, {
+  //   get (target, prop, receiver) {
+  //     const val = Reflect.get(emitted, prop, emitted);
+
+  //     if (prop === 'get') {
+  //       return function (code) {
+  //         const state = emitted.get(code)
+  //         return state === STATES.UNLIMITED_ONGOING || state === STATES.LIMITED_FINAL
+  //       }
+  //     }
+  //     return Reflect.get(emitted, prop, emitted);
+  //   }
+  // })
+
   return {
     create,
     createDeprecation,
     emit,
-    emitted: {
-      get (code) {
-        const state = emitted.get(code)
-        return state === STATES.UNLIMITED_ONGOING || state === STATES.LIMITED_FINAL
-      }
-    }
+    emitted: buildProxy(emitted)
   }
 }
 
 module.exports = processWarning
 module.exports.default = processWarning
 module.exports.processWarning = processWarning
+
+/* istanbul ignore next */
+function buildProxy (emitted) {
+  return Object.create(emitted, {
+    delete: { value: function (code) { return emitted.delete(code) } },
+    clear: { value: function () { return emitted.clear() } },
+    set: {
+      value: function (code, newState) {
+        const state = emitted.get(code)
+        const isUnlimited = state === STATES.UNLIMITED_INITIAL || state === STATES.UNLIMITED_ONGOING
+        if (isUnlimited) {
+          return emitted.set(code, newState ? STATES.UNLIMITED_ONGOING : STATES.UNLIMITED_INITIAL)
+        } else {
+          return emitted.set(code, newState ? STATES.LIMITED_FINAL : STATES.LIMITED_INITIAL)
+        }
+      }
+    },
+    get: {
+      value: function (code) {
+        const state = emitted.get(code)
+        return state === STATES.UNLIMITED_ONGOING || state === STATES.LIMITED_FINAL
+      }
+    }
+  })
+}
