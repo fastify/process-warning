@@ -53,11 +53,40 @@ const { format } = require('node:util')
  * @property {STATE_CONSTANT} LIMITED_FINAL Indicates that the warning
  * is to be issued only once and has already been emitted.
  */
-const STATES = {
-  UNLIMITED_INITIAL: newBooleanState(0),
-  UNLIMITED_ONGOING: newBooleanState(-1),
-  LIMITED_INITIAL: newBooleanState(1),
-  LIMITED_FINAL: newBooleanState(2)
+
+class STATE extends Boolean {
+  static UNLIMITED_INITIAL = 0
+  static UNLIMITED_ONGOING = -1
+  static LIMITED_INITIAL = 1
+  static LIMITED_FINAL = 2
+
+  #code = 0
+
+  constructor (value) {
+    super()
+    this.#code = value ?? 0
+  }
+
+  get code () {
+    return this.#code
+  }
+
+  set code (val) {
+    this.#code = val
+  }
+
+  isEmitted () {
+    return this.valueOf()
+  }
+
+  valueOf () {
+    switch (this.#code) {
+      case STATE.UNLIMITED_INITIAL: return false
+      case STATE.UNLIMITED_ONGOING: return true
+      case STATE.LIMITED_INITIAL: return false
+      case STATE.LIMITED_FINAL: return true
+    }
+  }
 }
 
 /**
@@ -115,7 +144,7 @@ function processWarning () {
       }
     }
 
-    emitted.set(code, unlimited ? STATES.UNLIMITED_INITIAL : STATES.LIMITED_INITIAL)
+    emitted.set(code, unlimited ? new STATE(STATE.UNLIMITED_INITIAL) : new STATE(STATE.LIMITED_INITIAL))
     codes[code] = buildWarnOpts
 
     return codes[code]
@@ -161,11 +190,13 @@ function processWarning () {
    */
   function emit (code, a, b, c) {
     const state = emitted.get(code)
-    if (state === STATES.LIMITED_FINAL) return
+    if (state?.code === STATE.LIMITED_FINAL) return
     if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
+
+    state.code = state.code <= STATE.UNLIMITED_INITIAL ? STATE.UNLIMITED_ONGOING : STATE.LIMITED_FINAL
     emitted.set(
       code,
-      state.stateCode <= STATES.UNLIMITED_INITIAL.stateCode ? STATES.UNLIMITED_ONGOING : STATES.LIMITED_FINAL
+      state
     )
 
     const warning = codes[code](a, b, c)
@@ -183,7 +214,3 @@ function processWarning () {
 module.exports = processWarning
 module.exports.default = processWarning
 module.exports.processWarning = processWarning
-
-function newBooleanState (code) {
-  return Object.create(Boolean, { stateCode: { value: code } })
-}
