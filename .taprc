@@ -1,2 +1,3 @@
 files:
   - test/**/*[!jest].test.js
+  - test/lib/*.test.js
