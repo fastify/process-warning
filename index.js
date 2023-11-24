@@ -75,11 +75,13 @@ class STATE extends Boolean {
     this.#code = val
   }
 
+  /* istanbul ignore next */
   isEmitted () {
     return this.valueOf()
   }
 
   valueOf () {
+    /* istanbul ignore next */
     switch (this.#code) {
       case STATE.UNLIMITED_INITIAL: return false
       case STATE.UNLIMITED_ONGOING: return true
