@@ -43,31 +43,7 @@ const { format } = require('node:util')
 function processWarning () {
   const codes = {}
   const emitted = new Map()
-
-  /**
-   * @typedef {number} STATE_CONSTANT
-   */
-
-  /**
-   * @private
-   * @typdef {object} EMISSION_STATES
-   * @property {STATE_CONSTANT} UNLIMITED_INITIAL Indicates that the warning
-   * is to be issued an unlimited number of times but has not yet been
-   * emitted.
-   * @property {STATE_CONSTANT} UNLIMITED_ONGOING Indicates that the warning
-   * is to be issued an unlimited number of times and has been emitted at least
-   * once.
-   * @property {STATE_CONSTANT} LIMITED_INITIAL Indicates that the warning
-   * is to be issued only once but has not yet been emitted.
-   * @property {STATE_CONSTANT} LIMITED_FINAL Indicates that the warning
-   * is to be issued only once and has already been emitted.
-   */
-  const STATES = {
-    UNLIMITED_INITIAL: 0,
-    UNLIMITED_ONGOING: -1,
-    LIMITED_INITIAL: 1,
-    LIMITED_FINAL: 2
-  }
+  const opts = Object.create(null)
 
   /**
    * Builds a new {@link ProcessWarning} and adds it to the
@@ -115,7 +91,8 @@ function processWarning () {
       }
     }
 
-    emitted.set(code, unlimited ? STATES.UNLIMITED_INITIAL : STATES.LIMITED_INITIAL)
+    Object.assign(opts, { unlimited })
+    emitted.set(code, unlimited)
     codes[code] = buildWarnOpts
 
     return codes[code]
@@ -160,13 +137,9 @@ function processWarning () {
    * @param {*} [c] Possible message interpolation value.
    */
   function emit (code, a, b, c) {
-    const state = emitted.get(code)
-    if (state === STATES.LIMITED_FINAL) return
+    if (emitted.get(code) === true && opts.unlimited === false) return
     if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
-    emitted.set(
-      code,
-      state <= STATES.UNLIMITED_INITIAL ? STATES.UNLIMITED_ONGOING : STATES.LIMITED_FINAL
-    )
+    emitted.set(code, true)
 
     const warning = codes[code](a, b, c)
     process.emitWarning(warning.message, warning.name, warning.code)
@@ -176,12 +149,7 @@ function processWarning () {
     create,
     createDeprecation,
     emit,
-    emitted: {
-      get (code) {
-        const state = emitted.get(code)
-        return state === STATES.UNLIMITED_ONGOING || state === STATES.LIMITED_FINAL
-      }
-    }
+    emitted
   }
 }
 

@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('tap')
+const test = require('tap').test
 const build = require('..')
 
 test('emit should emit a given code only once', t => {
