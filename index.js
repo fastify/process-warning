@@ -35,6 +35,9 @@ const { format } = require('node:util')
  * @returns ProcessWarning
  */
 
+const CFLAG_EMITTED = 1 << 0
+const CFLAG_UNLIMITED = 1 << 1
+
 /**
  * Factory that builds a new {@link ProcessWarningManager} and returns it.
  *
@@ -43,7 +46,6 @@ const { format } = require('node:util')
 function processWarning () {
   const codes = {}
   const emitted = new Map()
-  const opts = Object.create(null)
 
   /**
    * Builds a new {@link ProcessWarning} and adds it to the
@@ -91,8 +93,7 @@ function processWarning () {
       }
     }
 
-    Object.assign(opts, { unlimited })
-    emitted.set(code, unlimited)
+    emitted.set(code, unlimited * CFLAG_UNLIMITED)
     codes[code] = buildWarnOpts
 
     return codes[code]
@@ -137,10 +138,16 @@ function processWarning () {
    * @param {*} [c] Possible message interpolation value.
    */
   function emit (code, a, b, c) {
-    if (emitted.get(code) === true && opts.unlimited === false) return
-    if (codes[code] === undefined) throw new Error(`The code '${code}' does not exist`)
-    emitted.set(code, true)
-
+    const state = emitted.get(code)
+    if (state & CFLAG_EMITTED) {
+      if ((state & CFLAG_UNLIMITED) === 0) return
+    } else {
+      emitted.set(code, state | CFLAG_EMITTED)
+    }
+    if (codes[code] === undefined) {
+      emitted.delete(code)
+      throw new Error(`The code '${code}' does not exist`)
+    }
     const warning = codes[code](a, b, c)
     process.emitWarning(warning.message, warning.name, warning.code)
   }
