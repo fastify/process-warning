@@ -11,7 +11,7 @@ test('emit with interpolated string', t => {
     t.equal(warning.name, 'FastifyDeprecation')
     t.equal(warning.code, 'CODE')
     t.equal(warning.message, 'Hello world')
-    t.ok(codeWarning.isEmitted())
+    t.ok(codeWarning.emitted)
   }
 
   const codeWarning = createWarning('FastifyDeprecation', 'CODE', 'Hello %s')

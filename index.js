@@ -48,14 +48,6 @@ class WarningItem {
     }
     return formatted
   }
-
-  isEmitted () {
-    return this.emitted
-  }
-
-  setEmitted (value) {
-    this.emitted = value === true
-  }
 }
 
 const out = { createWarning, createDeprecation }

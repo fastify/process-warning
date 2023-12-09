@@ -11,7 +11,7 @@ test('emit should emit a given code only once', t => {
     t.equal(warning.name, 'FastifyDeprecation')
     t.equal(warning.code, 'CODE')
     t.equal(warning.message, 'Hello world')
-    t.ok(warn.isEmitted())
+    t.ok(warn.emitted)
   }
 
   const warn = createWarning('FastifyDeprecation', 'CODE', 'Hello world')

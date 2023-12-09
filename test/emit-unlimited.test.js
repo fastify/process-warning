@@ -15,7 +15,7 @@ test('emit should emit a given code unlimited times', t => {
     t.equal(warning.name, 'FastifyDeprecation')
     t.equal(warning.code, 'CODE')
     t.equal(warning.message, 'Hello world')
-    t.ok(warn.isEmitted())
+    t.ok(warn.emitted)
     t.equal(runs++, expectedRun.shift())
   }
 
