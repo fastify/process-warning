@@ -1,17 +1,20 @@
 import { expectType } from 'tsd'
-import Warinig, { BuildWarnOptsFn, WarnOpts } from '..'
+import { createWarning, createDeprecation } from '../index'
 
-const warning = Warinig()
-const buildWarnOpts = warning.create('FastifyWarning', 'CODE', 'message')
-expectType<BuildWarnOptsFn>(buildWarnOpts)
-const opts = buildWarnOpts()
-expectType<WarnOpts>(opts)
-expectType<string>(opts.code)
-expectType<string>(opts.message)
-expectType<string>(opts.name)
+const code = createWarning('FastifyWarning', 'CODE', 'message')
 
-expectType<void>(warning.emit('CODE'))
-expectType<Map<string, boolean>>(warning.emitted)
+expectType<string>(code.code)
+expectType<string>(code.message)
+expectType<string>(code.name)
+expectType<boolean>(code.emitted)
+expectType<boolean>(code.unlimited)
 
-const buildWarnUnlimited = warning.create('FastifyWarning', 'CODE', 'message', { unlimited: true })
-expectType<BuildWarnOptsFn>(buildWarnUnlimited)
+expectType<void>(code.emit())
+expectType<void>(code.emit('foo'))
+expectType<void>(code.emit('foo', 'bar'))
+
+const buildWarnUnlimited = createWarning('FastifyWarning', 'CODE', 'message', { unlimited: true })
+expectType<boolean>(buildWarnUnlimited.unlimited)
+
+const deprecation = createDeprecation('CODE', 'message')
+expectType<string>(deprecation.code)
