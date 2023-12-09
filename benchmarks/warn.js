@@ -1,15 +1,15 @@
 'use strict'
 
 const { Suite } = require('benchmark')
-const warning = require('..')()
+const { createWarning } = require('..')
 
-warning.create('FastifyWarning', 'FST_ERROR_CODE_1', 'message')
-warning.create('FastifyWarning', 'FST_ERROR_CODE_2', 'message')
-warning.create('FastifyWarning', 'FST_ERROR_CODE_3', 'message')
+const err1 = createWarning('FastifyWarning', 'FST_ERROR_CODE_1', 'message')
+const err2 = createWarning('FastifyWarning', 'FST_ERROR_CODE_2', 'message')
+
 new Suite()
   .add('warn', function () {
-    warning.emit('FST_ERROR_CODE_1')
-    warning.emit('FST_ERROR_CODE_3')
+    err1.emit()
+    err2.emit()
   })
   .on('cycle', function (event) {
     console.log(String(event.target))
