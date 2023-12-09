@@ -32,6 +32,10 @@ class WarningItem {
     }
     this.emitted = true
 
+    process.emitWarning(this.format(a, b, c), this.name, this.code)
+  }
+
+  format (a, b, c) {
     let formatted
     if (a && b && c) {
       formatted = format(this.message, a, b, c)
@@ -42,8 +46,7 @@ class WarningItem {
     } else {
       formatted = this.message
     }
-
-    process.emitWarning(formatted, this.name, this.code)
+    return formatted
   }
 
   isEmitted () {

@@ -1,12 +1,10 @@
 'use strict'
 
 const test = require('tap').test
-const build = require('..')
+const { createWarning } = require('..')
 
 test('emit should emit a given code unlimited times', t => {
   t.plan(50)
-
-  const { create, emit, emitted } = build()
 
   let runs = 0
   const expectedRun = []
@@ -17,15 +15,15 @@ test('emit should emit a given code unlimited times', t => {
     t.equal(warning.name, 'FastifyDeprecation')
     t.equal(warning.code, 'CODE')
     t.equal(warning.message, 'Hello world')
-    t.ok(emitted.get('CODE'))
+    t.ok(warn.isEmitted())
     t.equal(runs++, expectedRun.shift())
   }
 
-  create('FastifyDeprecation', 'CODE', 'Hello world', { unlimited: true })
+  const warn = createWarning('FastifyDeprecation', 'CODE', 'Hello world', { unlimited: true })
 
   for (let i = 0; i < times; i++) {
     expectedRun.push(i)
-    emit('CODE')
+    warn.emit()
   }
   setImmediate(() => {
     process.removeListener('warning', onWarning)
