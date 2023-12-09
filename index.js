@@ -14,48 +14,43 @@ function createWarning (name, code, message, { unlimited = false } = {}) {
 
   code = code.toUpperCase()
 
-  return new WarningItem(name, code, message, unlimited)
+  return buildWarningItem(name, code, message, unlimited)
 }
 
-class WarningItem {
-  constructor (name, code, message, unlimited) {
-    this.name = name
-    this.code = code
-    this.message = message
-    this.unlimited = unlimited
-    this.emitted = false
-  }
+function buildWarningItem (name, code, message, unlimited) {
+  const item = Object.create(null, {
+    code: { value: code, writable: false },
+    name: { value: name, writable: false },
+    message: { value: message, writable: false },
+    emitted: { value: false, writable: true },
+    emit: { value: emit, writable: false },
+    format: { value: formatString.bind(null, message), writable: false }
+  })
 
-  emit (a, b, c) {
-    if (this.emitted === true && this.unlimited === false) {
+  return item
+
+  function emit (a, b, c) {
+    if (item.emitted === true && unlimited === false) {
       return
     }
-    this.emitted = true
+    item.emitted = true
 
-    process.emitWarning(this.format(a, b, c), this.name, this.code)
+    process.emitWarning(formatString(message, a, b, c), name, code)
   }
+}
 
-  format (a, b, c) {
-    let formatted
-    if (a && b && c) {
-      formatted = format(this.message, a, b, c)
-    } else if (a && b) {
-      formatted = format(this.message, a, b)
-    } else if (a) {
-      formatted = format(this.message, a)
-    } else {
-      formatted = this.message
-    }
-    return formatted
+function formatString (message, a, b, c) {
+  let formatted
+  if (a && b && c) {
+    formatted = format(message, a, b, c)
+  } else if (a && b) {
+    formatted = format(message, a, b)
+  } else if (a) {
+    formatted = format(message, a)
+  } else {
+    formatted = message
   }
-
-  isEmitted () {
-    return this.emitted
-  }
-
-  setEmitted (value) {
-    this.emitted = value === true
-  }
+  return formatted
 }
 
 const out = { createWarning, createDeprecation }
