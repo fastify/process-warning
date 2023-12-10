@@ -1,20 +1,24 @@
 import { expectType } from 'tsd'
-import { createWarning, createDeprecation } from '../index'
+import { createWarning, createDeprecation } from '..'
 
-const code = createWarning('FastifyWarning', 'CODE', 'message')
+const WarnInstance = createWarning('FastifyWarning', 'CODE', 'message')
 
-expectType<string>(code.code)
-expectType<string>(code.message)
-expectType<string>(code.name)
-expectType<boolean>(code.emitted)
-expectType<boolean>(code.unlimited)
+expectType<string>(WarnInstance.code)
+expectType<string>(WarnInstance.message)
+expectType<string>(WarnInstance.name)
+expectType<boolean>(WarnInstance.emitted)
+expectType<boolean>(WarnInstance.unlimited)
 
-expectType<void>(code.emit())
-expectType<void>(code.emit('foo'))
-expectType<void>(code.emit('foo', 'bar'))
+expectType<void>(WarnInstance.emit())
+expectType<void>(WarnInstance.emit('foo'))
+expectType<void>(WarnInstance.emit('foo', 'bar'))
 
 const buildWarnUnlimited = createWarning('FastifyWarning', 'CODE', 'message', { unlimited: true })
 expectType<boolean>(buildWarnUnlimited.unlimited)
 
-const deprecation = createDeprecation('CODE', 'message')
-expectType<string>(deprecation.code)
+const DeprecationInstance = createDeprecation('CODE', 'message')
+expectType<string>(DeprecationInstance.code)
+
+DeprecationInstance.emit()
+DeprecationInstance.emit('foo')
+DeprecationInstance.emit('foo', 'bar')
