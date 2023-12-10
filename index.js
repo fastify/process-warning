@@ -62,41 +62,26 @@ function createWarning (name, code, message, { unlimited = false } = {}) {
 
   code = code.toUpperCase()
 
-  return new WarningItem(name, code, message, unlimited)
-}
+  const warning = unlimited 
+  ? function (a, b, c) {
+    warning.emitted = true
 
-/**
- * Represents a warning item with details.
- * @class
- * @memberof processWarning
- * @param {string} name - The name of the warning.
- * @param {string} code - The code associated with the warning.
- * @param {string} message - The warning message.
- * @param {boolean} unlimited - If true, allows unlimited emissions of the warning.
- */
-class WarningItem {
-  constructor (name, code, message, unlimited) {
-    this.name = name
-    this.code = code
-    this.message = message
-    this.unlimited = unlimited
-    this.emitted = false
+    process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
   }
-
-  /**
-   * Emits the warning.
-   * @param {*} [a] Possible message interpolation value.
-   * @param {*} [b] Possible message interpolation value.
-   * @param {*} [c] Possible message interpolation value.
-   */
-  emit (a, b, c) {
-    if (this.emitted === true && this.unlimited === false) {
+  : function (a, b, c) {
+    if (warning.emitted === true) {
       return
     }
-    this.emitted = true
-
-    process.emitWarning(this.format(a, b, c), this.name, this.code)
+    warning.emitted = true
+    
+    process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
   }
+
+  warning.emitted = false;
+  warning.message = message;
+  warning.unlimited = unlimited;
+  Object.defineProperty(warning, 'name', { value: name })
+  warning.code = code;
 
   /**
    * Formats the warning message.
@@ -105,19 +90,21 @@ class WarningItem {
    * @param {*} [c] Possible message interpolation value.
    * @returns {string} The formatted warning message.
    */
-  format (a, b, c) {
+  warning.format = function (a, b, c) {
     let formatted
     if (a && b && c) {
-      formatted = format(this.message, a, b, c)
+      formatted = format(message, a, b, c)
     } else if (a && b) {
-      formatted = format(this.message, a, b)
+      formatted = format(message, a, b)
     } else if (a) {
-      formatted = format(this.message, a)
+      formatted = format(message, a)
     } else {
-      formatted = this.message
+      formatted = message
     }
     return formatted
   }
+
+  return warning
 }
 
 /**
