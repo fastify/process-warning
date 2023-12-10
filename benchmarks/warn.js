@@ -8,8 +8,8 @@ const err2 = createWarning('FastifyWarning', 'FST_ERROR_CODE_2', 'message')
 
 new Suite()
   .add('warn', function () {
-    err1.emit()
-    err2.emit()
+    err1()
+    err2()
   })
   .on('cycle', function (event) {
     console.log(String(event.target))

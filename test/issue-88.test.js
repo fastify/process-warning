@@ -14,8 +14,8 @@ test('Must not overwrite config', t => {
   createWarning('FastifyWarning', 'CODE_2', 'Msg', { unlimited: true })
 
   process.on('warning', onWarning)
-  a.emit('CODE_1')
-  a.emit('CODE_1')
+  a('CODE_1')
+  a('CODE_1')
 
   setImmediate(() => {
     process.removeListener('warning', onWarning)

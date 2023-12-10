@@ -16,7 +16,7 @@ test('emit should set the emitted state', t => {
   warn.emitted = true
   t.ok(warn.emitted)
 
-  warn.emit()
+  warn()
   t.ok(warn.emitted)
 
   setImmediate(() => {

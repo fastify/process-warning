@@ -5,7 +5,7 @@ const { createWarning } = require('..')
 
 test('works with jest', done => {
   const code = createWarning('FastifyDeprecation', 'CODE', 'Hello %s')
-  code.emit('world')
+  code('world')
 
   // we cannot actually listen to process warning event
   // because jest messes with it (that's the point of this test)

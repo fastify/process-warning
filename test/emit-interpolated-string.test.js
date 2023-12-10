@@ -15,8 +15,8 @@ test('emit with interpolated string', t => {
   }
 
   const codeWarning = createWarning('FastifyDeprecation', 'CODE', 'Hello %s')
-  codeWarning.emit('world')
-  codeWarning.emit('world')
+  codeWarning('world')
+  codeWarning('world')
 
   setImmediate(() => {
     process.removeListener('warning', onWarning)
