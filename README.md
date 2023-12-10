@@ -17,7 +17,7 @@ npm i process-warning
 
 ### Usage
 
-The module exports a 2 builder functions for creating warnings and emitting them.
+The module exports two builder functions for creating warnings. A warning has a `emit` method.
 
 ```js
 const {
