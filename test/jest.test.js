@@ -4,7 +4,11 @@
 const { createWarning } = require('..')
 
 test('works with jest', done => {
-  const code = createWarning('FastifyDeprecation', 'CODE', 'Hello %s')
+  const code = createWarning({
+    name: 'FastifyDeprecation',
+    code: 'CODE',
+    message: 'Hello world'
+  })
   code('world')
 
   // we cannot actually listen to process warning event

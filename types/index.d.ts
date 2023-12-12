@@ -9,17 +9,26 @@ declare namespace processWarning {
     format(a?: any, b?: any, c?: any): string;
   }
 
+  export type WarningOptions = {
+    name: string;
+    code: string;
+    message: string;
+    unlimited?: boolean;
+  }
+
+  export type DeprecationOptions = Omit<WarningOptions, 'name'>
+
   export type ProcessWarningOptions = {
     unlimited?: boolean;
   }
 
   export type ProcessWarning = {
-    createWarning(name: string, code: string, message: string, opts?: ProcessWarningOptions): WarningItem;
-    createDeprecation(code: string, message: string, opts?: ProcessWarningOptions): WarningItem;
+    createWarning(params: WarningOptions): WarningItem;
+    createDeprecation(params: DeprecationOptions): WarningItem;
   }
 
-  export function createDeprecation(code: string, message: string, opts?: ProcessWarningOptions): WarningItem;
-  export function createWarning(name: string, code: string, message: string, opts?: ProcessWarningOptions): WarningItem;
+  export function createWarning(params: WarningOptions): WarningItem;
+  export function createDeprecation(params: DeprecationOptions): WarningItem;
 
   const processWarning: ProcessWarning;
   export { processWarning as default };

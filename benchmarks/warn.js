@@ -3,8 +3,16 @@
 const { Suite } = require('benchmark')
 const { createWarning } = require('..')
 
-const err1 = createWarning('FastifyWarning', 'FST_ERROR_CODE_1', 'message')
-const err2 = createWarning('FastifyWarning', 'FST_ERROR_CODE_2', 'message')
+const err1 = createWarning({
+  name: 'FastifyWarning',
+  code: 'FST_ERROR_CODE_1',
+  message: 'message'
+})
+const err2 = createWarning({
+  name: 'FastifyWarning',
+  code: 'FST_ERROR_CODE_2',
+  message: 'message'
+})
 
 new Suite()
   .add('warn', function () {

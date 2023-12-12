@@ -14,7 +14,11 @@ test('emit with interpolated string', t => {
     t.ok(codeWarning.emitted)
   }
 
-  const codeWarning = createWarning('FastifyDeprecation', 'CODE', 'Hello %s')
+  const codeWarning = createWarning({
+    name: 'FastifyDeprecation',
+    code: 'CODE',
+    message: 'Hello %s'
+  })
   codeWarning('world')
   codeWarning('world')
 

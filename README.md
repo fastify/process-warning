@@ -25,13 +25,18 @@ const {
   createDeprecation
 } = require('process-warning')
 
-const warning = createWarning('FastifyWarning', 'FSTWRN001', 'Hello %s', { unlimited: true })
+const warning = createWarning({
+  name: 'FastifyWarning',
+  code: 'FSTWRN001',
+  message: 'Hello %s',
+  unlimited: true
+})
 warning.emit('world')
 ```
 
 #### Methods
 
-##### `createWarning(name, code, message[, options])`
+##### `createWarning({ name, code, message[, unlimited] })`
 
 - `name` (`string`, required) - The error name, you can access it later with
 `error.name`. For consistency, we recommend prefixing module error names
@@ -47,7 +52,7 @@ properties:
   once? Defaults to `false`.
 
 
-##### `createDeprecation(code, message[, options])`
+##### `createDeprecation({code, message[, options]})`
 
 This is a wrapper for `warning.create`. It is equivalent to invoking
 `warning.create` with the `name` parameter set to "DeprecationWarning".
@@ -65,21 +70,21 @@ A warning is guaranteed to be emitted at least once.
 
 ```js
 const { createWarning } = require('process-warning')
-const FST_ERROR_CODE = createWarning('FastifyWarning', 'FST_ERROR_CODE', 'message')
+const FST_ERROR_CODE = createWarning({ name: 'FastifyWarning', code: 'FST_ERROR_CODE', message: 'message' })
 FST_ERROR_CODE.emit()
 ```
 
 How to use an interpolated string:
 ```js
 const { createWarning } = require('process-warning')
-const FST_ERROR_CODE = createWarning('FastifyWarning', 'FST_ERROR_CODE', 'Hello %s')
+const FST_ERROR_CODE = createWarning({ name: 'FastifyWarning', code: 'FST_ERROR_CODE', message: 'Hello %s'})
 FST_ERROR_CODE.emit('world')
 ```
 
-The `warning` object has few utilities, which contains the warning's state. Useful for testing.
+The `warning` object has methods and properties for managing the warning's state. Useful for testing.
 ```js
 const { createWarning } = require('process-warning')
-const FST_ERROR_CODE = createWarning('FastifyWarning', 'FST_ERROR_CODE', 'Hello %s')
+const FST_ERROR_CODE = createWarning({ name: 'FastifyWarning', code: 'FST_ERROR_CODE', message: 'Hello %s'})
 console.log(FST_ERROR_CODE.emitted) // false
 FST_ERROR_CODE.emit('world')
 console.log(FST_ERROR_CODE.emitted) // true
@@ -92,7 +97,7 @@ FST_ERROR_CODE_2.emit('world') // will not be emitted
 How to use an unlimited warning:
 ```js
 const { createWarning } = require('process-warning')
-const FST_ERROR_CODE = createWarning('FastifyWarning', 'FST_ERROR_CODE', 'Hello %s', { unlimited: true })
+const FST_ERROR_CODE = createWarning({ name: 'FastifyWarning', code: 'FST_ERROR_CODE', message: 'Hello %s', unlimited: true })
 FST_ERROR_CODE.emit('world') // will be emitted
 FST_ERROR_CODE.emit('world') // will be emitted again
 ```

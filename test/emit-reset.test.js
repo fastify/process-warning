@@ -3,12 +3,13 @@
 const test = require('tap').test
 const { createWarning } = require('../')
 
-test('emit should set the emitted state', t => {
-  t.plan(3)
+test('a limited warning can be re-set', t => {
+  t.plan(4)
 
+  let count = 0
   process.on('warning', onWarning)
   function onWarning () {
-    t.fail('should not be called')
+    count++
   }
 
   const warn = createWarning({
@@ -16,14 +17,19 @@ test('emit should set the emitted state', t => {
     code: 'CODE',
     message: 'Hello world'
   })
-  t.notOk(warn.emitted)
-  warn.emitted = true
+
+  warn.emit()
   t.ok(warn.emitted)
 
-  warn()
+  warn.emit()
+  t.ok(warn.emitted)
+
+  warn.emitted = false
+  warn.emit()
   t.ok(warn.emitted)
 
   setImmediate(() => {
+    t.equal(count, 2)
     process.removeListener('warning', onWarning)
     t.end()
   })
