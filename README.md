@@ -76,7 +76,7 @@ const FST_ERROR_CODE = createWarning('FastifyWarning', 'FST_ERROR_CODE', 'Hello 
 FST_ERROR_CODE.emit('world')
 ```
 
-The `warning` object has few utilities, which contains the warning's state. Useful for testing.
+The `warning` object has methods and properties for managing the warning's state. Useful for testing.
 ```js
 const { createWarning } = require('process-warning')
 const FST_ERROR_CODE = createWarning('FastifyWarning', 'FST_ERROR_CODE', 'Hello %s')
