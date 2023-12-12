@@ -70,7 +70,7 @@ test('Creates a deprecation warning', t => {
   t.equal(deprecationItem.code, 'CODE')
 })
 
-test('Should throw when error code has no fastify name', t => {
+test('Should throw when error code has no name', t => {
   t.plan(1)
   t.throws(() => createWarning(), new Error('Warning name must not be empty'))
 })

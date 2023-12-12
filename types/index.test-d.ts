@@ -2,7 +2,7 @@ import { expectType } from 'tsd'
 import { createWarning, createDeprecation } from '..'
 
 const WarnInstance = createWarning({
-  name: 'FastifyWarning',
+  name: 'TypeScriptWarning',
   code: 'CODE',
   message: 'message'
 })
@@ -18,7 +18,7 @@ expectType<void>(WarnInstance('foo'))
 expectType<void>(WarnInstance('foo', 'bar'))
 
 const buildWarnUnlimited = createWarning({
-  name: 'FastifyWarning',
+  name: 'TypeScriptWarning',
   code: 'CODE',
   message: 'message',
   unlimited: true

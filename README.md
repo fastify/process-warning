@@ -70,26 +70,26 @@ A warning is guaranteed to be emitted at least once.
 
 ```js
 const { createWarning } = require('process-warning')
-const FST_ERROR_CODE = createWarning({ name: 'FastifyWarning', code: 'FST_ERROR_CODE', message: 'message' })
+const FST_ERROR_CODE = createWarning({ name: 'MyAppWarning', code: 'FST_ERROR_CODE', message: 'message' })
 FST_ERROR_CODE()
 ```
 
 How to use an interpolated string:
 ```js
 const { createWarning } = require('process-warning')
-const FST_ERROR_CODE = createWarning({ name: 'FastifyWarning', code: 'FST_ERROR_CODE', message: 'Hello %s'})
+const FST_ERROR_CODE = createWarning({ name: 'MyAppWarning', code: 'FST_ERROR_CODE', message: 'Hello %s'})
 FST_ERROR_CODE('world')
 ```
 
 The `warning` object has methods and properties for managing the warning's state. Useful for testing.
 ```js
 const { createWarning } = require('process-warning')
-const FST_ERROR_CODE = createWarning({ name: 'FastifyWarning', code: 'FST_ERROR_CODE', message: 'Hello %s'})
+const FST_ERROR_CODE = createWarning({ name: 'MyAppWarning', code: 'FST_ERROR_CODE', message: 'Hello %s'})
 console.log(FST_ERROR_CODE.emitted) // false
 FST_ERROR_CODE('world')
 console.log(FST_ERROR_CODE.emitted) // true
 
-const FST_ERROR_CODE_2 = createWarning('FastifyWarning', 'FST_ERROR_CODE_2', 'Hello %s')
+const FST_ERROR_CODE_2 = createWarning('MyAppWarning', 'FST_ERROR_CODE_2', 'Hello %s')
 FST_ERROR_CODE_2.emitted = true
 FST_ERROR_CODE_2('world') // will not be emitted
 ```
@@ -97,7 +97,7 @@ FST_ERROR_CODE_2('world') // will not be emitted
 How to use an unlimited warning:
 ```js
 const { createWarning } = require('process-warning')
-const FST_ERROR_CODE = createWarning({ name: 'FastifyWarning', code: 'FST_ERROR_CODE', message: 'Hello %s', unlimited: true })
+const FST_ERROR_CODE = createWarning({ name: 'MyAppWarning', code: 'FST_ERROR_CODE', message: 'Hello %s', unlimited: true })
 FST_ERROR_CODE('world') // will be emitted
 FST_ERROR_CODE('world') // will be emitted again
 ```

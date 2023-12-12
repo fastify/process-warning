@@ -8,14 +8,14 @@ test('emit with interpolated string', t => {
 
   process.on('warning', onWarning)
   function onWarning (warning) {
-    t.equal(warning.name, 'FastifyDeprecation')
+    t.equal(warning.name, 'TestDeprecation')
     t.equal(warning.code, 'CODE')
     t.equal(warning.message, 'Hello world')
     t.ok(codeWarning.emitted)
   }
 
   const codeWarning = createWarning({
-    name: 'FastifyDeprecation',
+    name: 'TestDeprecation',
     code: 'CODE',
     message: 'Hello %s'
   })

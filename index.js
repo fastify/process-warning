@@ -47,7 +47,6 @@ function createDeprecation (params) {
   return createWarning({ ...params, name: 'DeprecationWarning' })
 }
 
-
 /**
  * Creates a warning item.
  * @function
@@ -64,25 +63,24 @@ function createWarning ({ name, code, message, unlimited = false } = {}) {
 
   code = code.toUpperCase()
 
-  const warningContainer = unlimited
-    ? {
-        [name]: function (a, b, c) {
-          warning.emitted = true
-
-          process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
-        }
-
+  let warningContainer = {
+    [name]: function (a, b, c) {
+      if (warning.emitted === true && warning.unlimited !== true) {
+        return
       }
-    : {
-        [name]: function (a, b, c) {
-          if (warning.emitted === true && warning.unlimited !== true) {
-            return
-          }
-          warning.emitted = true
-
-          process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
-        }
+      warning.emitted = true
+      process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
+    }
+  }
+  if (unlimited) {
+    warningContainer = {
+      [name]: function (a, b, c) {
+        warning.emitted = true
+        process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
       }
+    }
+  }
+
   const warning = warningContainer[name]
 
   warning.emitted = false
