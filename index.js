@@ -62,26 +62,33 @@ function createWarning (name, code, message, { unlimited = false } = {}) {
 
   code = code.toUpperCase()
 
-  const warning = unlimited 
-  ? function (a, b, c) {
-    warning.emitted = true
+  let warning
 
-    process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
-  }
-  : function (a, b, c) {
-    if (warning.emitted === true) {
-      return
-    }
-    warning.emitted = true
-    
-    process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
-  }
+  const warningContainer = unlimited
+    ? {
+        [name]: function (a, b, c) {
+          warning.emitted = true
 
-  warning.emitted = false;
-  warning.message = message;
-  warning.unlimited = unlimited;
-  Object.defineProperty(warning, 'name', { value: name })
-  warning.code = code;
+          process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
+        }
+
+      }
+    : {
+        [name]: function (a, b, c) {
+          if (warning.emitted === true && warning.unlimited !== true) {
+            return
+          }
+          warning.emitted = true
+
+          process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
+        }
+      }
+  warning = warningContainer[name]
+
+  warning.emitted = false
+  warning.message = message
+  warning.unlimited = unlimited
+  warning.code = code
 
   /**
    * Formats the warning message.
