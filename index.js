@@ -47,13 +47,6 @@ function createDeprecation (params) {
   return createWarning({ ...params, name: 'DeprecationWarning' })
 }
 
-/**
- * Emits the warning.
- * @typedef WarningEmitter
- * @param {*} [a] Possible message interpolation value.
- * @param {*} [b] Possible message interpolation value.
- * @param {*} [c] Possible message interpolation value.
- */
 
 /**
  * Creates a warning item.

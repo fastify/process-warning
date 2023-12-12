@@ -5,7 +5,7 @@ const { createWarning } = require('..')
 
 test('works with jest', done => {
   const code = createWarning({
-    name: 'FastifyDeprecation',
+    name: 'TestDeprecation',
     code: 'CODE',
     message: 'Hello world'
   })

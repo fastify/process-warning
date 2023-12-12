@@ -12,7 +12,7 @@ test('emit should set the emitted state', t => {
   }
 
   const warn = createWarning({
-    name: 'FastifyDeprecation',
+    name: 'TestDeprecation',
     code: 'CODE',
     message: 'Hello world'
   })

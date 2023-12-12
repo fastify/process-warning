@@ -11,12 +11,12 @@ test('Must not overwrite config', t => {
   }
 
   const a = createWarning({
-    name: 'FastifyWarning',
+    name: 'TestWarning',
     code: 'CODE_1',
     message: 'Msg'
   })
   createWarning({
-    name: 'FastifyWarning',
+    name: 'TestWarning',
     code: 'CODE_2',
     message: 'Msg',
     unlimited: true

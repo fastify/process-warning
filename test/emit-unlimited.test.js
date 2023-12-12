@@ -20,7 +20,7 @@ test('emit should emit a given code unlimited times', t => {
   }
 
   const warn = createWarning({
-    name: 'FastifyDeprecation',
+    name: 'TestDeprecation',
     code: 'CODE',
     message: 'Hello world',
     unlimited: true

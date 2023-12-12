@@ -13,7 +13,7 @@ test('a limited warning can be re-set', t => {
   }
 
   const warn = createWarning({
-    name: 'FastifyDeprecation',
+    name: 'TestDeprecation',
     code: 'CODE',
     message: 'Hello world'
   })

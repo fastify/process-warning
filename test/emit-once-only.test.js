@@ -15,7 +15,7 @@ test('emit should emit a given code only once', t => {
   }
 
   const warn = createWarning({
-    name: 'FastifyDeprecation',
+    name: 'TestDeprecation',
     code: 'CODE',
     message: 'Hello world'
   })

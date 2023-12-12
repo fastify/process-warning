@@ -9,11 +9,11 @@ test('Create warning with zero parameter', t => {
   t.plan(3)
 
   const warnItem = createWarning({
-    name: 'FastifyWarning',
+    name: 'TestWarning',
     code: 'CODE',
     message: 'Not available'
   })
-  t.equal(warnItem.name, 'FastifyWarning')
+  t.equal(warnItem.name, 'TestWarning')
   t.equal(warnItem.message, 'Not available')
   t.equal(warnItem.code, 'CODE')
 })
@@ -22,11 +22,11 @@ test('Create error with 1 parameter', t => {
   t.plan(3)
 
   const warnItem = createWarning({
-    name: 'FastifyWarning',
+    name: 'TestWarning',
     code: 'CODE',
     message: 'hey %s'
   })
-  t.equal(warnItem.name, 'FastifyWarning')
+  t.equal(warnItem.name, 'TestWarning')
   t.equal(warnItem.format('alice'), 'hey alice')
   t.equal(warnItem.code, 'CODE')
 })
@@ -35,11 +35,11 @@ test('Create error with 2 parameters', t => {
   t.plan(3)
 
   const warnItem = createWarning({
-    name: 'FastifyWarning',
+    name: 'TestWarning',
     code: 'CODE',
     message: 'hey %s, I like your %s'
   })
-  t.equal(warnItem.name, 'FastifyWarning')
+  t.equal(warnItem.name, 'TestWarning')
   t.equal(warnItem.format('alice', 'attitude'), 'hey alice, I like your attitude')
   t.equal(warnItem.code, 'CODE')
 })
@@ -48,11 +48,11 @@ test('Create error with 3 parameters', t => {
   t.plan(3)
 
   const warnItem = createWarning({
-    name: 'FastifyWarning',
+    name: 'TestWarning',
     code: 'CODE',
     message: 'hey %s, I like your %s %s'
   })
-  t.equal(warnItem.name, 'FastifyWarning')
+  t.equal(warnItem.name, 'TestWarning')
   t.equal(warnItem.format('alice', 'attitude', 'see you'), 'hey alice, I like your attitude see you')
   t.equal(warnItem.code, 'CODE')
 })

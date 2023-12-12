@@ -17,7 +17,7 @@ npm i process-warning
 
 ### Usage
 
-The module exports two builder functions for creating warnings. A warning has a `emit` method.
+The module exports two builder functions for creating warnings.
 
 ```js
 const {
@@ -26,8 +26,8 @@ const {
 } = require('process-warning')
 
 const warning = createWarning({
-  name: 'FastifyWarning',
-  code: 'FSTWRN001',
+  name: 'ExampleWarning',
+  code: 'EXP_WRN_001',
   message: 'Hello %s',
   unlimited: true
 })
