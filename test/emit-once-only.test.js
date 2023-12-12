@@ -19,8 +19,8 @@ test('emit should emit a given code only once', t => {
     code: 'CODE',
     message: 'Hello world'
   })
-  warn.emit()
-  warn.emit()
+  warn()
+  warn()
   setImmediate(() => {
     process.removeListener('warning', onWarning)
     t.end()

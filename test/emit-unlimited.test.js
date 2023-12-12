@@ -28,7 +28,7 @@ test('emit should emit a given code unlimited times', t => {
 
   for (let i = 0; i < times; i++) {
     expectedRun.push(i)
-    warn.emit()
+    warn()
   }
   setImmediate(() => {
     process.removeListener('warning', onWarning)

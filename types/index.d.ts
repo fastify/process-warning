@@ -1,11 +1,11 @@
 declare namespace processWarning {
-  export type WarningItem = {
+  export interface WarningItem {
+    (a?: any, b?: any, c?: any): void;
     name: string;
     code: string;
     message: string;
     emitted: boolean;
     unlimited: boolean;
-    emit(a?: any, b?: any, c?: any): void;
     format(a?: any, b?: any, c?: any): string;
   }
 

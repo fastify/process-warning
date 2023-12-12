@@ -8,4 +8,4 @@ const CUSTDEP001 = createWarning({
   message: 'This is a deprecation warning'
 })
 
-CUSTDEP001.emit()
+CUSTDEP001()

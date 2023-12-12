@@ -19,8 +19,8 @@ test('emit with interpolated string', t => {
     code: 'CODE',
     message: 'Hello %s'
   })
-  codeWarning.emit('world')
-  codeWarning.emit('world')
+  codeWarning('world')
+  codeWarning('world')
 
   setImmediate(() => {
     process.removeListener('warning', onWarning)

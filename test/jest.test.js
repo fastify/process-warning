@@ -9,7 +9,7 @@ test('works with jest', done => {
     code: 'CODE',
     message: 'Hello world'
   })
-  code.emit('world')
+  code('world')
 
   // we cannot actually listen to process warning event
   // because jest messes with it (that's the point of this test)

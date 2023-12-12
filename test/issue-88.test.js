@@ -23,8 +23,8 @@ test('Must not overwrite config', t => {
   })
 
   process.on('warning', onWarning)
-  a.emit('CODE_1')
-  a.emit('CODE_1')
+  a('CODE_1')
+  a('CODE_1')
 
   setImmediate(() => {
     process.removeListener('warning', onWarning)

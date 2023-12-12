@@ -16,8 +16,8 @@ const err2 = createWarning({
 
 new Suite()
   .add('warn', function () {
-    err1.emit()
-    err2.emit()
+    err1()
+    err2()
   })
   .on('cycle', function (event) {
     console.log(String(event.target))

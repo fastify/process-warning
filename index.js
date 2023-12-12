@@ -8,7 +8,10 @@ const { format } = require('node:util')
 
 /**
  * Represents a warning item with details.
- * @typedef {Object} WarningItem
+ * @typedef {Function} WarningItem
+ * @param {*} [a] Possible message interpolation value.
+ * @param {*} [b] Possible message interpolation value.
+ * @param {*} [c] Possible message interpolation value.
  * @property {string} name - The name of the warning.
  * @property {string} code - The code associated with the warning.
  * @property {string} message - The warning message.
@@ -45,6 +48,14 @@ function createDeprecation (params) {
 }
 
 /**
+ * Emits the warning.
+ * @typedef WarningEmitter
+ * @param {*} [a] Possible message interpolation value.
+ * @param {*} [b] Possible message interpolation value.
+ * @param {*} [c] Possible message interpolation value.
+ */
+
+/**
  * Creates a warning item.
  * @function
  * @memberof processWarning
@@ -60,41 +71,31 @@ function createWarning ({ name, code, message, unlimited = false } = {}) {
 
   code = code.toUpperCase()
 
-  return new WarningItem(name, code, message, unlimited)
-}
+  const warningContainer = unlimited
+    ? {
+        [name]: function (a, b, c) {
+          warning.emitted = true
 
-/**
- * Represents a warning item with details.
- * @class
- * @memberof processWarning
- * @param {string} name - The name of the warning.
- * @param {string} code - The code associated with the warning.
- * @param {string} message - The warning message.
- * @param {boolean} unlimited - If true, allows unlimited emissions of the warning.
- */
-class WarningItem {
-  constructor (name, code, message, unlimited) {
-    this.name = name
-    this.code = code
-    this.message = message
-    this.unlimited = unlimited
-    this.emitted = false
-  }
+          process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
+        }
 
-  /**
-   * Emits the warning.
-   * @param {*} [a] Possible message interpolation value.
-   * @param {*} [b] Possible message interpolation value.
-   * @param {*} [c] Possible message interpolation value.
-   */
-  emit (a, b, c) {
-    if (this.emitted === true && this.unlimited === false) {
-      return
-    }
+      }
+    : {
+        [name]: function (a, b, c) {
+          if (warning.emitted === true && warning.unlimited !== true) {
+            return
+          }
+          warning.emitted = true
 
-    this.emitted = true
-    process.emitWarning(this.format(a, b, c), this.name, this.code)
-  }
+          process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
+        }
+      }
+  const warning = warningContainer[name]
+
+  warning.emitted = false
+  warning.message = message
+  warning.unlimited = unlimited
+  warning.code = code
 
   /**
    * Formats the warning message.
@@ -103,19 +104,21 @@ class WarningItem {
    * @param {*} [c] Possible message interpolation value.
    * @returns {string} The formatted warning message.
    */
-  format (a, b, c) {
+  warning.format = function (a, b, c) {
     let formatted
     if (a && b && c) {
-      formatted = format(this.message, a, b, c)
+      formatted = format(message, a, b, c)
     } else if (a && b) {
-      formatted = format(this.message, a, b)
+      formatted = format(message, a, b)
     } else if (a) {
-      formatted = format(this.message, a)
+      formatted = format(message, a)
     } else {
-      formatted = this.message
+      formatted = message
     }
     return formatted
   }
+
+  return warning
 }
 
 /**
