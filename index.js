@@ -71,8 +71,6 @@ function createWarning ({ name, code, message, unlimited = false } = {}) {
 
   code = code.toUpperCase()
 
-  let warning
-
   const warningContainer = unlimited
     ? {
         [name]: function (a, b, c) {
@@ -92,7 +90,7 @@ function createWarning ({ name, code, message, unlimited = false } = {}) {
           process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
         }
       }
-  warning = warningContainer[name]
+  const warning = warningContainer[name]
 
   warning.emitted = false
   warning.message = message
