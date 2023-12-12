@@ -13,9 +13,9 @@ expectType<string>(WarnInstance.name)
 expectType<boolean>(WarnInstance.emitted)
 expectType<boolean>(WarnInstance.unlimited)
 
-expectType<void>(WarnInstance.emit())
-expectType<void>(WarnInstance.emit('foo'))
-expectType<void>(WarnInstance.emit('foo', 'bar'))
+expectType<void>(WarnInstance())
+expectType<void>(WarnInstance('foo'))
+expectType<void>(WarnInstance('foo', 'bar'))
 
 const buildWarnUnlimited = createWarning({
   name: 'FastifyWarning',
@@ -31,6 +31,6 @@ const DeprecationInstance = createDeprecation({
 })
 expectType<string>(DeprecationInstance.code)
 
-DeprecationInstance.emit()
-DeprecationInstance.emit('foo')
-DeprecationInstance.emit('foo', 'bar')
+DeprecationInstance()
+DeprecationInstance('foo')
+DeprecationInstance('foo', 'bar')
