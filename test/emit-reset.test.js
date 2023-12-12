@@ -18,14 +18,14 @@ test('a limited warning can be re-set', t => {
     message: 'Hello world'
   })
 
-  warn.emit()
+  warn()
   t.ok(warn.emitted)
 
-  warn.emit()
+  warn()
   t.ok(warn.emitted)
 
   warn.emitted = false
-  warn.emit()
+  warn()
   t.ok(warn.emitted)
 
   setImmediate(() => {

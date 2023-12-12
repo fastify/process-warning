@@ -16,7 +16,6 @@ const { format } = require('node:util')
  * @property {string} code - The code associated with the warning.
  * @property {string} message - The warning message.
  * @property {boolean} emitted - Indicates if the warning has been emitted.
- * @property {function} emit - Emits the warning.
  * @property {function} format - Formats the warning message.
  */
 

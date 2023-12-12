@@ -7,7 +7,7 @@
 A small utility for generating consistent warning objects across your codebase.
 It also exposes a utility for emitting those warnings, guaranteeing that they are issued only once (unless configured otherwise).
 
-This module is used by the [Fastify](https://fastify.io) framework and it was called `fastify-warning` prior to version 1.0.0.
+_This module is used by the [Fastify](https://fastify.io) framework and it was called `fastify-warning` prior to version 1.0.0._
 
 ### Install
 
@@ -54,16 +54,15 @@ properties:
 
 ##### `createDeprecation({code, message[, options]})`
 
-This is a wrapper for `warning.create`. It is equivalent to invoking
-`warning.create` with the `name` parameter set to "DeprecationWarning".
+This is a wrapper for `createWarning`. It is equivalent to invoking
+`createWarning` with the `name` parameter set to "DeprecationWarning".
 
 Deprecation warnings have extended support for the Node.js CLI options:
 `--throw-deprecation`, `--no-deprecation`, and `--trace-deprecation`.
 
 ##### `warning([, a [, b [, c]]])`
 
-The utility also contains an `emit` function that you can use for emitting the
-warnings you have previously created by passing their respective code.
+The returned `warning` function can used for emitting warnings.
 A warning is guaranteed to be emitted at least once.
 
 - `[, a [, b [, c]]]` (`any`, optional) - Parameters for string interpolation.
@@ -91,7 +90,7 @@ console.log(FST_ERROR_CODE.emitted) // true
 
 const FST_ERROR_CODE_2 = createWarning('MyAppWarning', 'FST_ERROR_CODE_2', 'Hello %s')
 FST_ERROR_CODE_2.emitted = true
-FST_ERROR_CODE_2('world') // will not be emitted
+FST_ERROR_CODE_2('world') // will not be emitted because it is not unlimited
 ```
 
 How to use an unlimited warning:
