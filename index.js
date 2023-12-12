@@ -20,6 +20,9 @@ const { format } = require('node:util')
 /**
  * Options for creating a process warning.
  * @typedef {Object} ProcessWarningOptions
+ * @property {string} name - The name of the warning.
+ * @property {string} code - The code associated with the warning.
+ * @property {string} message - The warning message.
  * @property {boolean} [unlimited=false] - If true, allows unlimited emissions of the warning.
  */
 
@@ -34,27 +37,22 @@ const { format } = require('node:util')
  * Creates a deprecation warning item.
  * @function
  * @memberof processWarning
- * @param {string} code - The code associated with the warning.
- * @param {string} message - The warning message.
- * @param {ProcessWarningOptions} [opts={}] - Options for creating the warning.
+ * @param {ProcessWarningOptions} params - Options for creating the warning.
  * @returns {WarningItem} The created deprecation warning item.
  */
-function createDeprecation (code, message, opts = {}) {
-  return createWarning('DeprecationWarning', code, message, opts)
+function createDeprecation (params) {
+  return createWarning({ ...params, name: 'DeprecationWarning' })
 }
 
 /**
  * Creates a warning item.
  * @function
  * @memberof processWarning
- * @param {string} name - The name of the warning.
- * @param {string} code - The code associated with the warning.
- * @param {string} message - The warning message.
- * @param {ProcessWarningOptions} [opts={}] - Options for creating the warning.
+ * @param {ProcessWarningOptions} params - Options for creating the warning.
  * @returns {WarningItem} The created warning item.
  * @throws {Error} Throws an error if name, code, or message is empty, or if opts.unlimited is not a boolean.
  */
-function createWarning (name, code, message, { unlimited = false } = {}) {
+function createWarning ({ name, code, message, unlimited = false } = {}) {
   if (!name) throw new Error('Warning name must not be empty')
   if (!code) throw new Error('Warning code must not be empty')
   if (!message) throw new Error('Warning message must not be empty')
@@ -93,8 +91,8 @@ class WarningItem {
     if (this.emitted === true && this.unlimited === false) {
       return
     }
-    this.emitted = true
 
+    this.emitted = true
     process.emitWarning(this.format(a, b, c), this.name, this.code)
   }
 

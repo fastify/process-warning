@@ -10,8 +10,17 @@ test('Must not overwrite config', t => {
     t.equal(warning.code, 'CODE_1')
   }
 
-  const a = createWarning('FastifyWarning', 'CODE_1', 'Msg', { unlimited: false })
-  createWarning('FastifyWarning', 'CODE_2', 'Msg', { unlimited: true })
+  const a = createWarning({
+    name: 'FastifyWarning',
+    code: 'CODE_1',
+    message: 'Msg'
+  })
+  createWarning({
+    name: 'FastifyWarning',
+    code: 'CODE_2',
+    message: 'Msg',
+    unlimited: true
+  })
 
   process.on('warning', onWarning)
   a.emit('CODE_1')

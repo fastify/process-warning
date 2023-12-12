@@ -11,7 +11,11 @@ test('emit should set the emitted state', t => {
     t.fail('should not be called')
   }
 
-  const warn = createWarning('FastifyDeprecation', 'CODE', 'Hello world')
+  const warn = createWarning({
+    name: 'FastifyDeprecation',
+    code: 'CODE',
+    message: 'Hello world'
+  })
   t.notOk(warn.emitted)
   warn.emitted = true
   t.ok(warn.emitted)

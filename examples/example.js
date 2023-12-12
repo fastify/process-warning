@@ -2,6 +2,10 @@
 
 const { createWarning } = require('..')
 
-const CUSTDEP001 = createWarning('DeprecationWarning', 'CUSTDEP001', 'This is a deprecation warning')
+const CUSTDEP001 = createWarning({
+  name: 'DeprecationWarning',
+  code: 'CUSTDEP001',
+  message: 'This is a deprecation warning'
+})
 
 CUSTDEP001.emit()

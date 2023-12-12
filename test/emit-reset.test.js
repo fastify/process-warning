@@ -1,17 +1,15 @@
 'use strict'
 
 const test = require('tap').test
-const { createWarning } = require('..')
+const { createWarning } = require('../')
 
-test('emit should emit a given code only once', t => {
+test('a limited warning can be re-set', t => {
   t.plan(4)
 
+  let count = 0
   process.on('warning', onWarning)
-  function onWarning (warning) {
-    t.equal(warning.name, 'FastifyDeprecation')
-    t.equal(warning.code, 'CODE')
-    t.equal(warning.message, 'Hello world')
-    t.ok(warn.emitted)
+  function onWarning () {
+    count++
   }
 
   const warn = createWarning({
@@ -19,9 +17,19 @@ test('emit should emit a given code only once', t => {
     code: 'CODE',
     message: 'Hello world'
   })
+
   warn.emit()
+  t.ok(warn.emitted)
+
   warn.emit()
+  t.ok(warn.emitted)
+
+  warn.emitted = false
+  warn.emit()
+  t.ok(warn.emitted)
+
   setImmediate(() => {
+    t.equal(count, 2)
     process.removeListener('warning', onWarning)
     t.end()
   })
