@@ -109,7 +109,7 @@ Warnings can be suppressed:
 
 - by setting the `NODE_NO_WARNINGS` environment variable to `1`
 - by passing the `--no-warnings` flag to the node process
-- by setting 'no-warnings' in the `NODE_OPTIONS` environment variable
+- by setting '--no-warnings' in the `NODE_OPTIONS` environment variable
 
 For more information see [node's documentation](https://nodejs.org/api/cli.html).
 
