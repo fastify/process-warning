@@ -7,7 +7,7 @@
 A small utility for generating consistent warning objects across your codebase.
 It also exposes a utility for emitting those warnings, guaranteeing that they are issued only once (unless configured otherwise).
 
-_This module is used by the [Fastify](https://fastify.io) framework and it was called `fastify-warning` prior to version 1.0.0._
+_This module is used by the [Fastify](https://fastify.dev) framework and it was called `fastify-warning` prior to version 1.0.0._
 
 ### Install
 
