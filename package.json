@@ -39,5 +39,9 @@
     "standard": "^17.1.0",
     "tap": "^18.7.2",
     "tsd": "^0.31.0"
-  }
+  },
+  "files": [
+    "index.js",
+    "types/index.d.ts"
+  ]
 }
