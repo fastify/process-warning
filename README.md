@@ -4,7 +4,7 @@
 [![NPM version](https://img.shields.io/npm/v/process-warning.svg?style=flat)](https://www.npmjs.com/package/process-warning)
 [![neostandard javascript style](https://img.shields.io/badge/code_style-neostandard-brightgreen?style=flat)](https://github.com/neostandard/neostandard)
 
-A small utility for generating consistent warning objects across your codebase.
+A small utility for generating consistent [warning objects](https://nodejs.org/api/process.html#event-warning) across your codebase.
 It also exposes a utility for emitting those warnings, guaranteeing that they are issued only once (unless configured otherwise).
 
 _This module is used by the [Fastify](https://fastify.dev) framework and it was called `fastify-warning` prior to version 1.0.0._
