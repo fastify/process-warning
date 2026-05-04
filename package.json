@@ -11,7 +11,7 @@
     "test": "npm run test:unit && npm run test:jest && npm run test:typescript",
     "test:jest": "jest jest.test.js",
     "test:unit": "c8 --100 node --test",
-    "test:typescript": "tsd"
+    "test:typescript": "tstyche"
   },
   "repository": {
     "type": "git",
@@ -67,6 +67,6 @@
     "eslint": "^9.17.0",
     "jest": "^30.0.3",
     "neostandard": "^0.13.0",
-    "tsd": "^0.33.0"
+    "tstyche": "^7.0.0"
   }
 }
