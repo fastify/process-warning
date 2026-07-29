@@ -141,7 +141,7 @@ function createWarning ({ name, code, message, unlimited = false } = {}) {
 
   const warningContainer = {
     [name]: function (a, b, c) {
-      warning[kWarningFn](a, b, c)
+      return warning[kWarningFn](a, b, c)
     }
   }
 
