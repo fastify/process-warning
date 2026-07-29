@@ -61,8 +61,18 @@ function spyWarning (warning) {
   if (warning[kWarningSpyData] === null) {
     const warningFn = warning[kWarningFn]
     warning[kWarningFn] = function (a, b, c) {
+      const args = []
+      // since warning always call by fn(a, b, c)
+      // it need to remove the trailing undefined arguments
+      if (c) {
+        args.push(a, b, c)
+      } else if (b) {
+        args.push(a, b)
+      } else if (a) {
+        args.push(a)
+      }
       warning[kWarningSpyData].calls.push({
-        arguments: Array.from(arguments).filter(Boolean),
+        arguments: args,
         result: warningFn(a, b, c)
       })
     }
