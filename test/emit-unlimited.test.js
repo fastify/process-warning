@@ -5,7 +5,7 @@ const { createWarning } = require('..')
 const { withResolvers } = require('./promise')
 
 test('emit should emit a given code unlimited times', t => {
-  t.plan(50)
+  t.plan(60)
 
   let runs = 0
   const expectedRun = []
@@ -31,7 +31,7 @@ test('emit should emit a given code unlimited times', t => {
 
   for (let i = 0; i < times; i++) {
     expectedRun.push(i)
-    warn()
+    t.assert.strictEqual(warn(), true)
   }
   setImmediate(() => {
     process.removeListener('warning', onWarning)

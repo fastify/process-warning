@@ -31,7 +31,7 @@ const warning = createWarning({
   message: 'Hello %s',
   unlimited: true
 })
-warning('world')
+const emitted = warning('world')
 ```
 
 #### Methods
@@ -99,6 +99,45 @@ const { createWarning } = require('process-warning')
 const FST_ERROR_CODE = createWarning({ name: 'MyAppWarning', code: 'FST_ERROR_CODE', message: 'Hello %s', unlimited: true })
 FST_ERROR_CODE('world') // will be emitted
 FST_ERROR_CODE('world') // will be emitted again
+```
+
+#### `spyWarning(warning)`
+
+Spy the created warning function for testing purpose.
+
+```js
+const { test } = require('node:test')
+const { createWarning, spyWarning } = require('process-warning')
+const FST_ERROR_CODE = createWarning({ name: 'MyAppWarning', code: 'FST_ERROR_CODE', message: 'Hello %s' })
+
+test('spy warning', t => {
+  const spyData = spyWarning(FST_ERROR_CODE)
+
+  // call after spy
+  const emitted = FST_ERROR_CODE('world')
+  t.assert.strictEqual(emitted, true)
+
+  // restore the warning function
+  // it must be called when you do not need to spy anymore
+  // otherwise, the calls data will accumulates.
+  t.after(() => spyData.restore())
+
+  t.assert.strictEqual(FST_ERROR_CODE.emitted, true)
+  // calls return the arguments and result.
+  // result indicate whether warning is emitted through process.emitWarning
+  console.log(spyData.calls) // [{ arguments: ['world'], result: true }]
+  t.assert.deepStrictEqual(spyData.calls[0].arguments, ['world'])
+  t.assert.strictEqual(spyData.calls[0].result,  true)
+  // number of times called the function
+  console.log(spyData.callCount()) // 1
+  t.assert.strictEqual(spyData.callCount(),  1)
+
+  // reset the spy stat and warning state
+  spyData.reset()
+  t.assert.strictEqual(FST_ERROR_CODE.emitted, false)
+  t.assert.deepStrictEqual(spyData.calls, [])
+  t.assert.strictEqual(spyData.callCount(),  0)
+})
 ```
 
 #### Suppressing warnings

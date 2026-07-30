@@ -17,6 +17,7 @@ const { format } = require('node:util')
  * @property {string} message - The warning message.
  * @property {boolean} emitted - Indicates if the warning has been emitted.
  * @property {function} format - Formats the warning message.
+ * @returns {boolean} emit - Indicates if the warning has been emitted by this call.
  */
 
 /**
@@ -33,7 +34,68 @@ const { format } = require('node:util')
  * @typedef {Object} ProcessWarning
  * @property {function} createWarning - Creates a warning item.
  * @property {function} createDeprecation - Creates a deprecation warning item.
+ * @property {function} spyWarning - Spy a warning item.
  */
+
+/**
+ * Represents the spy data.
+ * @typedef {Object} WarningSpyData
+ * @property {object} calls - Arguments of WarningItem calls with.
+ * @property {function} callCount - Number of counts called the WarningItem.
+ * @property {function} reset - Reset the calls data and state of WarningItem.
+ * @property {function} restore - Remove spy from WarningItem.
+ */
+
+const kWarningFn = Symbol('process-warning.fn')
+const kWarningSpyData = Symbol('process-warning.spyData')
+
+/**
+ * Spy a warning item.
+ * @function
+ * @memberof processWarning
+ * @param {WarningItem} warning - The warning item to spy.
+ * @returns {WarningSpyData} The created spy data.
+ */
+function spyWarning (warning) {
+  // Do not double spy the same warning
+  if (warning[kWarningSpyData] === null) {
+    const warningFn = warning[kWarningFn]
+    warning[kWarningFn] = function (a, b, c) {
+      const args = []
+      // since warning always call by fn(a, b, c)
+      // it need to remove the trailing undefined arguments
+      if (c) {
+        args.push(a, b, c)
+      } else if (b) {
+        args.push(a, b)
+      } else if (a) {
+        args.push(a)
+      }
+      warning[kWarningSpyData].calls.push({
+        arguments: args,
+        result: warningFn(a, b, c)
+      })
+    }
+    const spyData = {
+      calls: [],
+      callCount () {
+        return spyData.calls.length
+      },
+      reset () {
+        warning.emitted = false
+        spyData.calls.length = 0
+      },
+      restore () {
+        spyData.reset()
+        warning[kWarningFn] = warningFn
+        warning[kWarningSpyData] = null
+      }
+    }
+    warning[kWarningSpyData] = spyData
+  }
+
+  return warning[kWarningSpyData]
+}
 
 /**
  * Creates a deprecation warning item.
@@ -62,21 +124,24 @@ function createWarning ({ name, code, message, unlimited = false } = {}) {
 
   code = code.toUpperCase()
 
-  let warningContainer = {
-    [name]: function (a, b, c) {
+  const warningFn = unlimited === true
+    ? function (a, b, c) {
+      warning.emitted = true
+      process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
+      return true
+    }
+    : function (a, b, c) {
       if (warning.emitted === true && warning.unlimited !== true) {
-        return
+        return false
       }
       warning.emitted = true
       process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
+      return true
     }
-  }
-  if (unlimited) {
-    warningContainer = {
-      [name]: function (a, b, c) {
-        warning.emitted = true
-        process.emitWarning(warning.format(a, b, c), warning.name, warning.code)
-      }
+
+  const warningContainer = {
+    [name]: function (a, b, c) {
+      return warning[kWarningFn](a, b, c)
     }
   }
 
@@ -86,14 +151,16 @@ function createWarning ({ name, code, message, unlimited = false } = {}) {
   warning.message = message
   warning.unlimited = unlimited
   warning.code = code
+  warning[kWarningFn] = warningFn
+  warning[kWarningSpyData] = null
 
   /**
-   * Formats the warning message.
-   * @param {*} [a] Possible message interpolation value.
-   * @param {*} [b] Possible message interpolation value.
-   * @param {*} [c] Possible message interpolation value.
-   * @returns {string} The formatted warning message.
-   */
+ * Formats the warning message.
+ * @param {*} [a] Possible message interpolation value.
+ * @param {*} [b] Possible message interpolation value.
+ * @param {*} [c] Possible message interpolation value.
+ * @returns {string} The formatted warning message.
+ */
   warning.format = function (a, b, c) {
     let formatted
     if (a && b && c) {
@@ -116,9 +183,10 @@ function createWarning ({ name, code, message, unlimited = false } = {}) {
  * @namespace
  * @property {function} createWarning - Creates a warning item.
  * @property {function} createDeprecation - Creates a deprecation warning item.
+ * @property {function} spyWarning - Spy a warning item.
  * @property {ProcessWarning} processWarning - Represents the process warning functionality.
  */
-const out = { createWarning, createDeprecation }
+const out = { createWarning, createDeprecation, spyWarning }
 module.exports = out
 module.exports.default = out
 module.exports.processWarning = out

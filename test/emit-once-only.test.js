@@ -5,7 +5,7 @@ const { createWarning } = require('..')
 const { withResolvers } = require('./promise')
 
 test('emit should emit a given code only once', t => {
-  t.plan(4)
+  t.plan(6)
 
   const { promise, resolve } = withResolvers()
 
@@ -22,8 +22,8 @@ test('emit should emit a given code only once', t => {
     code: 'CODE',
     message: 'Hello world'
   })
-  warn()
-  warn()
+  t.assert.strictEqual(warn(), true)
+  t.assert.strictEqual(warn(), false)
   setImmediate(() => {
     process.removeListener('warning', onWarning)
     resolve()

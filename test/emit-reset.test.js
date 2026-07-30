@@ -5,7 +5,7 @@ const { createWarning } = require('../')
 const { withResolvers } = require('./promise')
 
 test('a limited warning can be re-set', t => {
-  t.plan(4)
+  t.plan(7)
 
   const { promise, resolve } = withResolvers()
   let count = 0
@@ -20,14 +20,14 @@ test('a limited warning can be re-set', t => {
     message: 'Hello world'
   })
 
-  warn()
+  t.assert.strictEqual(warn(), true)
   t.assert.ok(warn.emitted)
 
-  warn()
+  t.assert.strictEqual(warn(), false)
   t.assert.ok(warn.emitted)
 
   warn.emitted = false
-  warn()
+  t.assert.strictEqual(warn(), true)
   t.assert.ok(warn.emitted)
 
   setImmediate(() => {
