@@ -4,18 +4,18 @@
 [![NPM version](https://img.shields.io/npm/v/process-warning.svg?style=flat)](https://www.npmjs.com/package/process-warning)
 [![neostandard javascript style](https://img.shields.io/badge/code_style-neostandard-brightgreen?style=flat)](https://github.com/neostandard/neostandard)
 
-A small utility for generating consistent [warning objects](https://nodejs.org/api/process.html#event-warning) across your codebase.
+A small utility for generating consistent [warning objects](https://nodejs.org/api/process.html#event-warning) across a codebase.
 It also exposes a utility for emitting those warnings, guaranteeing that they are issued only once (unless configured otherwise).
 
-_This module is used by the [Fastify](https://fastify.dev) framework and it was called `fastify-warning` prior to version 1.0.0._
+_This module is used by the [Fastify](https://fastify.dev) framework, and it was called `fastify-warning` prior to version 1.0.0._
 
-### Install
+## Install
 
 ```
 npm i process-warning
 ```
 
-### Usage
+## Usage
 
 The module exports two builder functions for creating warnings.
 
@@ -34,35 +34,34 @@ const warning = createWarning({
 const emitted = warning('world')
 ```
 
-#### Methods
+### Methods
 
-##### `createWarning({ name, code, message[, unlimited] })`
+#### `createWarning({name, code, message[, unlimited]})`
 
-- `name` (`string`, required) - The error name, you can access it later with
-`error.name`. For consistency, we recommend prefixing module error names
-with `{YourModule}Warning`
-- `code` (`string`, required) - The warning code, you can access it later with
-`error.code`. For consistency, we recommend prefixing plugin error codes with
-`{ThreeLetterModuleName}_`, e.g. `FST_`. NOTE: codes should be all uppercase.
-- `message` (`string`, required) - The warning message. You can also use
-interpolated strings for formatting the message.
+- `name` (`string`, required) - The error name, accessible through
+`error.name`. For consistency, prefix module error names with
+`{ModuleName}Warning`.
+- `code` (`string`, required) - The warning code, accessible through
+`error.code`. For consistency, prefix plugin error codes with
+`{ThreeLetterModuleName}_`, e.g. `FST_`. Note: Codes should be all uppercase.
+- `message` (`string`, required) - The warning message. Interpolated strings
+can also be used to format the message.
 - `options` (`object`, optional) - Optional options with the following
 properties:
   + `unlimited` (`boolean`, optional) - Should the warning be emitted more than
   once? Defaults to `false`.
 
-
-##### `createDeprecation({code, message[, options]})`
+#### `createDeprecation({ code, message[, options] })`
 
 This is a wrapper for `createWarning`. It is equivalent to invoking
-`createWarning` with the `name` parameter set to "DeprecationWarning".
+`createWarning` with the `name` parameter set to `"DeprecationWarning"`.
 
 Deprecation warnings have extended support for the Node.js CLI options:
 `--throw-deprecation`, `--no-deprecation`, and `--trace-deprecation`.
 
-##### `warning([, a [, b [, c]]])`
+#### `warning([, a [, b [, c]]])`
 
-The returned `warning` function can used for emitting warnings.
+The returned `warning` function can be used to emit warnings.
 A warning is guaranteed to be emitted at least once.
 
 - `[, a [, b [, c]]]` (`any`, optional) - Parameters for string interpolation.
@@ -73,14 +72,16 @@ const FST_ERROR_CODE = createWarning({ name: 'MyAppWarning', code: 'FST_ERROR_CO
 FST_ERROR_CODE()
 ```
 
-How to use an interpolated string:
+Using an interpolated string:
+
 ```js
 const { createWarning } = require('process-warning')
 const FST_ERROR_CODE = createWarning({ name: 'MyAppWarning', code: 'FST_ERROR_CODE', message: 'Hello %s'})
 FST_ERROR_CODE('world')
 ```
 
-The `warning` object has methods and properties for managing the warning's state. Useful for testing.
+The `warning` object has methods and properties for managing the warning's state. These are useful for testing.
+
 ```js
 const { createWarning } = require('process-warning')
 const FST_ERROR_CODE = createWarning({ name: 'MyAppWarning', code: 'FST_ERROR_CODE', message: 'Hello %s'})
@@ -90,20 +91,21 @@ console.log(FST_ERROR_CODE.emitted) // true
 
 const FST_ERROR_CODE_2 = createWarning('MyAppWarning', 'FST_ERROR_CODE_2', 'Hello %s')
 FST_ERROR_CODE_2.emitted = true
-FST_ERROR_CODE_2('world') // will not be emitted because it is not unlimited
+FST_ERROR_CODE_2('world') // Will not be emitted because it is not unlimited
 ```
 
-How to use an unlimited warning:
+Using an unlimited warning:
+
 ```js
 const { createWarning } = require('process-warning')
 const FST_ERROR_CODE = createWarning({ name: 'MyAppWarning', code: 'FST_ERROR_CODE', message: 'Hello %s', unlimited: true })
-FST_ERROR_CODE('world') // will be emitted
-FST_ERROR_CODE('world') // will be emitted again
+FST_ERROR_CODE('world') // Will be emitted
+FST_ERROR_CODE('world') // Will be emitted again
 ```
 
 #### `spyWarning(warning)`
 
-Spy the created warning function for testing purpose.
+Spy on the created warning function for testing purposes.
 
 ```js
 const { test } = require('node:test')
@@ -113,44 +115,42 @@ const FST_ERROR_CODE = createWarning({ name: 'MyAppWarning', code: 'FST_ERROR_CO
 test('spy warning', t => {
   const spyData = spyWarning(FST_ERROR_CODE)
 
-  // call after spy
+  // Call after spying
   const emitted = FST_ERROR_CODE('world')
   t.assert.strictEqual(emitted, true)
 
-  // restore the warning function
-  // it must be called when you do not need to spy anymore
-  // otherwise, the calls data will accumulates.
+  // Restore the warning function
+  // This must be called when spying is no longer required
+  // Otherwise, the call data will accumulate
   t.after(() => spyData.restore())
 
   t.assert.strictEqual(FST_ERROR_CODE.emitted, true)
-  // calls return the arguments and result.
-  // result indicate whether warning is emitted through process.emitWarning
+  // `calls` contains the arguments and results
+  // `result` indicates whether the warning was emitted through `process.emitWarning`
   console.log(spyData.calls) // [{ arguments: ['world'], result: true }]
   t.assert.deepStrictEqual(spyData.calls[0].arguments, ['world'])
-  t.assert.strictEqual(spyData.calls[0].result,  true)
-  // number of times called the function
+  t.assert.strictEqual(spyData.calls[0].result, true)
+  // Number of times the function was called
   console.log(spyData.callCount()) // 1
-  t.assert.strictEqual(spyData.callCount(),  1)
+  t.assert.strictEqual(spyData.callCount(), 1)
 
-  // reset the spy stat and warning state
+  // Reset the spy statistics and warning state
   spyData.reset()
   t.assert.strictEqual(FST_ERROR_CODE.emitted, false)
   t.assert.deepStrictEqual(spyData.calls, [])
-  t.assert.strictEqual(spyData.callCount(),  0)
+  t.assert.strictEqual(spyData.callCount(), 0)
 })
 ```
 
-#### Suppressing warnings
+### Suppressing warnings
 
-It is possible to suppress warnings by utilizing one of node's built-in warning suppression mechanisms.
+Warnings can be suppressed by using one of Node.js's built-in warning suppression mechanisms:
 
-Warnings can be suppressed:
+- Setting the `NODE_NO_WARNINGS` environment variable to `1`
+- Passing the `--no-warnings` flag to the Node.js process
+- Setting `--no-warnings` in the `NODE_OPTIONS` environment variable
 
-- by setting the `NODE_NO_WARNINGS` environment variable to `1`
-- by passing the `--no-warnings` flag to the node process
-- by setting '--no-warnings' in the `NODE_OPTIONS` environment variable
-
-For more information see [node's documentation](https://nodejs.org/api/cli.html).
+For more information, see the [Node.js documentation](https://nodejs.org/api/cli.html).
 
 ## License
 
